@@ -6,7 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Model\Model.csproj" />
-      <ProjectReference Include="..\TegridyGardenerDbContext\TegridyGardenerDbContext.csproj" />
+      <ProjectReference Include="..\Persistence\Persistence.csproj" />
     </ItemGroup>
 
 </Project>

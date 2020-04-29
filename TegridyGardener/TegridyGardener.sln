@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Model", "Model\Model.csproj", "{D56A2608-F9A6-4018-952E-D584E92E2BE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TegridyGardenerDbContext", "TegridyGardenerDbContext\TegridyGardenerDbContext.csproj", "{F8F55268-DA8D-48BB-AFF3-F25C7E7D9E96}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistence", "Persistence\Persistence.csproj", "{F8F55268-DA8D-48BB-AFF3-F25C7E7D9E96}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TegridyGardener.WebAPI", "TegridyGardener.WebAPI\TegridyGardener.WebAPI.csproj", "{E8FEE031-5E18-4836-81E4-3B1F5BBBB47F}"
 EndProject

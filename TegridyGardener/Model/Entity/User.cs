@@ -4,11 +4,11 @@ namespace Model
 {
     public class User
     {
-        public User()
-        {
-            PlantsGroups = new List<PlantsGroup>();
-            PlantsAudits = new List<ScheduledAction>();
-        }
+//        public User()
+//        {
+//            PlantsGroups = new List<PlantsGroup>();
+//            PlantsAudits = new List<ScheduledAction>();
+//        }
 
         public int Id { get; set; }
 
