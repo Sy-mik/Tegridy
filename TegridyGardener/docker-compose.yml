@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  tregidygardener.webapi:
+    image: ${DOCKER_REGISTRY-}tregidygardener
+    build:
+      context: .
+      dockerfile: TregidyGardener.WebAPI/Dockerfile
