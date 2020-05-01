@@ -3,7 +3,7 @@ import * as React from 'react';
 import { useDispatch } from "react-redux";
 import * as signalR from '@aspnet/signalr';
 
-const webApiUri = 'http://localhost:5000/'
+const webApiUri = 'http://ad40d802.ngrok.io/'
 const plantsActionsHub = 'plantsActionsHub/'
 const plantsUri = 'Plants/';
 const userUri = 'user/';
@@ -36,8 +36,7 @@ export async function InvokeAction(actionId){
 }
 
 export async function listenOnActionResult(data){
-  console.log('HEY I GOT THE DATAAATATATATAT');
-  console.log(data);
+// Update View
 }
 
 export function InvokeWatering(wateringId) {

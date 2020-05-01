@@ -1,7 +1,7 @@
 const signalR = require("@microsoft/signalr");
 
 let connection = new signalR.HubConnectionBuilder()
-    .withUrl("http://localhost:5000/plantsActionsHub")
+    .withUrl("http://ad40d802.ngrok.io/plantsActionsHub")
     .build();
  
 connection.on("invokeAction", async data  => {
@@ -23,4 +23,3 @@ function sleep(ms) {
   } 
  
 connection.start();
-    //.then(() => connection.invoke("send", "Hello"));
