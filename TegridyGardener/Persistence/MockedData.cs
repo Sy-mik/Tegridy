@@ -9,16 +9,7 @@ namespace Model
 {
     public static class MockedData
     {
-        public static void Initialize(TegridyDbContext context)
-        {
-           
-                // Look for any board games.
-                if (context.Users.Any())
-                {
-                    return; // Data was already seeded
-                }
-
-                var plantInfo = new PlantInfo()
+        public static  PlantInfo plantInfo = new PlantInfo()
                 {
                     Id = 1,
                     Name = "Test",
@@ -30,7 +21,7 @@ namespace Model
                     }
                 };
                 
-                var plant = new Plant()
+        public static Plant plant = new Plant()
                 {
                     Id = Guid.NewGuid(),
                     Name = "Gardenia",
@@ -43,7 +34,7 @@ namespace Model
                     },
                     PlantInfo = plantInfo
                 };
-                var scheduledAction = new ScheduledAction()
+                public static ScheduledAction scheduledAction = new ScheduledAction()
                 {
                     Id = 1,
                     Plant = plant,
@@ -52,7 +43,8 @@ namespace Model
                     ScheduledDate = DateTime.Now.AddHours(3),
                     AmountOfWaterMilliliters = 24
                 };
-                var user = new User()
+                
+               public static User user = new User()
                 {
                     Id = 1,
                     Email = "example@gmail.com",
@@ -68,12 +60,5 @@ namespace Model
                     PlantsAudits = { scheduledAction }
                 };
 
-                context.PlantsAudit.Add(scheduledAction);
-                context.PlantsInfo.Add(plantInfo);
-                context.Plants.Add(plant);
-                context.Users.Add(user);
-
-                context.SaveChanges();
-        }
     }
 }

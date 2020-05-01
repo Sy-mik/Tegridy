@@ -49,7 +49,7 @@ return (
         <Button
           onPress={()=>{
             var plant = list.find(x=>x.id==selected)
-            if(selected!=-1){
+            if(selected != -1){
             var plant = list.find(x=>x.id==selected)
             }
             navigation.push('Add Plant',{ plant: plant})}}

@@ -1,8 +1,10 @@
 
 import * as React from 'react';
 import { useDispatch } from "react-redux";
+import * as signalR from '@aspnet/signalr';
 
-const webApiUri = 'http://localhost:8080/'
+const webApiUri = 'http://localhost:5000/'
+const plantsActionsHub = 'plantsActionsHub/'
 const plantsUri = 'Plants/';
 const userUri = 'user/';
 const scheduledActionsUri = 'ScheduledActions/';
@@ -16,6 +18,16 @@ export function RemoveScheduled(auditId){
       'Content-Type': 'application/json',
     },
   });
+}
+
+export async function InvokeAction(actionId){
+  const connection = new signalR.HubConnectionBuilder()
+  .withUrl(webApiUri+plantsActionsHub)
+  .build();
+  
+    await connection.start();
+
+   connection.invoke('invokeAction', actionId);
 }
 
 export function InvokeWatering(wateringId) {

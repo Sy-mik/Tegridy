@@ -1,18 +1,24 @@
+using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.EntityFrameworkCore.Internal;
 using Model;
 
 namespace Persistence
 {
     public class TegridyDbContext : DbContext
     {
-        public TegridyDbContext()
-        {
-        }
         
         public TegridyDbContext(DbContextOptions<TegridyDbContext> options) :base(options)
         {
-          //  MockedData.Initialize(this);
+            if (Users.Count()==0)
+            {
+                PlantsAudit.Add(MockedData.scheduledAction);
+                PlantsInfo.Add(MockedData.plantInfo);
+                Plants.Add(MockedData.plant);
+                Users.Add(MockedData.user);
+                this.SaveChanges();
+            }
         }
 
         public DbSet<Plant> Plants { get; set; }
@@ -27,20 +33,26 @@ namespace Persistence
 
         
         public DbSet<Rule> Rules { get; set; }
+        
+        
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+        }
     }
     
-    public class TegridyContextFacotry : IDesignTimeDbContextFactory<TegridyDbContext>
-    {
-
-            public TegridyDbContext CreateDbContext(string[] args)
-            {
-                var optionsBuilder = new DbContextOptionsBuilder<TegridyDbContext>();
-
-                var connection =
-                    @"Server=localhost,1433;Initial Catalog=master;Persist Security Info=False;User ID=sa;Password=WelcomeToTheJungle;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=60;";
-                optionsBuilder.UseSqlServer(connection);
-
-                return new TegridyDbContext(optionsBuilder.Options);
-            }
-    }
+//    public class TegridyContextFacotry : IDesignTimeDbContextFactory<TegridyDbContext>
+//    {
+//
+//            public TegridyDbContext CreateDbContext(string[] args)
+//            {
+//                var optionsBuilder = new DbContextOptionsBuilder<TegridyDbContext>();
+//
+//                var connection =
+//                    @"Server=localhost,1433;Initial Catalog=master;Persist Security Info=False;User ID=sa;Password=WelcomeToTheJungle;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=True;Connection Timeout=60;";
+//                optionsBuilder.UseSqlServer(connection);
+//
+//                return new TegridyDbContext(optionsBuilder.Options);
+//            }
+//    }
 }

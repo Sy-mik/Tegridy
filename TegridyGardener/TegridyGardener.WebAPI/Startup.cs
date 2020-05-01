@@ -13,6 +13,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Model;
 using Persistence;
+using TegridyGardener.WebAPI.Hubs;
 
 namespace TegridyGardener.WebAPI
 {
@@ -39,8 +40,10 @@ namespace TegridyGardener.WebAPI
             services.AddTransient<IUserAuthService, UserAuthService>();
 
             services.AddDbContext<TegridyDbContext>
-                (options => options.UseSqlServer(Configuration["ConnectionString:master"]));
-
+            (options =>
+                //options.UseSqlServer(Configuration["ConnectionString:master"]));
+                options.UseInMemoryDatabase("TegridyDbContex"));
+            
                     services.Configure<FormOptions>(o => {
                 o.ValueLengthLimit = int.MaxValue;
                 o.MultipartBodyLengthLimit = int.MaxValue;
@@ -59,6 +62,8 @@ namespace TegridyGardener.WebAPI
                             .AllowCredentials();
                     });
             });
+
+            services.AddSignalR();
             
             services.AddSwaggerGen(c =>
             {
@@ -89,7 +94,11 @@ namespace TegridyGardener.WebAPI
             app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1"); });
 
             app.UseCors();
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<PlantsActionsHub>("/plantsActionsHub");
+            });
         }
     }
 }

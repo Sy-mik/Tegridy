@@ -1,6 +1,6 @@
 import * as React from "react";
 import { View, Text, Image, StyleSheet, Button } from "react-native";
-import { InvokeWatering } from "../../services/apiCalls";
+import {  InvokeAction } from "../../services/apiCalls";
 import { RemoveScheduled } from "../../services/apiCalls";
 import FetchScheduled from "../../store/FetchScheduled";
 import { useDispatch } from "react-redux";
@@ -43,7 +43,7 @@ export default function ScheduledItemModal({ route, navigation }) {
           title="Remove"
           onPress={() => RemoveItem(item.auditId)}
         />
-        <Button title="Start" onPress={() => InvokeWatering(item.auditId)} />
+        <Button title="Start" onPress={() => InvokeAction(item.auditId)} />
       </View>
     </View>
   );
