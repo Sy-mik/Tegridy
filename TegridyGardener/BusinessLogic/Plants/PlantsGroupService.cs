@@ -40,9 +40,6 @@ namespace BusinessLogic
                 .ThenInclude(x=>x.Plants).SelectMany(x=>x.PlantsGroups.SelectMany(y=>y.Plants))
                 .ToList();
             return plants;
-//            Include(x => x.PlantsGroups)
-//                .ThenInclude(x => x.Plants)
-//                .FirstOrDefault(x => x.Id == userId).PlantsGroups.ToList();
         }
     }
 }
