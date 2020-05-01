@@ -27,7 +27,17 @@ export async function InvokeAction(actionId){
   
     await connection.start();
 
-   connection.invoke('invokeAction', actionId);
+    connection.on("updateActionResult", data => {
+      listenOnActionResult(data);
+    });
+
+   connection.invoke('invokeAction', actionId).then(()=>{
+   });
+}
+
+export async function listenOnActionResult(data){
+  console.log('HEY I GOT THE DATAAATATATATAT');
+  console.log(data);
 }
 
 export function InvokeWatering(wateringId) {
