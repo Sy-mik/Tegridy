@@ -1,7 +1,12 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Button, ScrollView } from "react-native";
-import Colors from "../../constants/Colors";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import {
   GetSuggestedActionForPlant,
   AddPlantAction,
@@ -10,7 +15,7 @@ import {
 } from "../../services/apiCalls";
 import { useDispatch } from "react-redux";
 import { fetchScheduled } from "../../store/actions";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import ScheduledActionForm from "../Scheduled/ScheduledActionForm";
 import ConfirmButton from "../../components/ConfirmButton";
 
@@ -24,9 +29,7 @@ export default function Plant({ route }) {
 
   const [loading, setLoading] = React.useState(false);
   const [action, setAction] = React.useState("");
-  const [scheduledHour, setScheduledHour] = React.useState(0);
-  const [scheduledMinute, setScheduledMinute] = React.useState(0);
-  const [scheduledDay, setSheduledDay] = React.useState(0);
+  const [scheduledDate, setScheduledDate] = React.useState(new Date());
   const [
     amountOfWaterMilliliters,
     setAmountOfWaterMilliliters,
@@ -36,22 +39,22 @@ export default function Plant({ route }) {
     navigation.setOptions({
       headerRight: () => (
         <Text
-          onPress={() => RemovePlant(plant.id).then(res=>FetchPlants())}
-          style={{ margin: 10, fontSize: 18, fontWeight: '500' }}
+          onPress={() => RemovePlant(plant.id).then((res) => FetchPlants())}
+          style={{ margin: 10, fontSize: 18, fontWeight: "500" }}
         >
           Remove
         </Text>
       ),
     });
   }, []);
-  // reducers part
 
-  async function FetchPlants(){
+  async function FetchPlants() {
     await GetPlants()
-    .then(res=>res.json())
-    .then(res=>{
-     dispatch(fetchPlants(res))});
-    }
+      .then((res) => res.json())
+      .then((res) => {
+        dispatch(fetchPlants(res));
+      });
+  }
 
   React.useLayoutEffect(() => {
     async function fetchData() {
@@ -61,26 +64,14 @@ export default function Plant({ route }) {
           setAction(res);
           setAmountOfWaterMilliliters(res.amountOfWaterMilliliters);
           let date = new Date(res.scheduledDate);
-          setScheduledHour(date.getHours());
-          setScheduledMinute(date.getMinutes());
-          setSheduledDay(getScheduledDay(date));
+          setScheduledDate(date);
         });
     }
     fetchData();
   }, []);
-  function getScheduledDay(date) {
-    new Date().getDate() - date.getDate();
-  }
 
   function ScheduleWatering() {
-    let date = new Date();
-    date.setHours(scheduledHour);
-    date.setMinutes(scheduledMinute);
-    if (scheduledDay) {
-      let day = Number(date.getDate()) + Number(scheduledDay);
-      date.setDate(day);
-    }
-    action.scheduledDate = date;
+    action.scheduledDate = scheduledDate;
     action.amountOfWaterMilliliters = new Number(amountOfWaterMilliliters);
     // refresh Scheduled list
     AddPlant(action);
@@ -102,7 +93,6 @@ export default function Plant({ route }) {
         });
     }
   }
-
   return (
     <View
       style={{
@@ -112,33 +102,29 @@ export default function Plant({ route }) {
       }}
     >
       <ScrollView>
-      <View style={styles.container}>
-        <Image
-          style={styles.modalImage}
-          resizeMode="cover"
-          source={{ uri: imageUri }}
-        ></Image>
-        <View style={styles.informationsContainer}>
-          <Text style={styles.title}>{itemName}</Text>
-          <Text>Information:</Text>
+        <View style={styles.container}>
+          <Image
+            style={styles.modalImage}
+            resizeMode="cover"
+            source={{ uri: imageUri }}
+          ></Image>
+          <View style={styles.informationsContainer}>
+            <Text style={styles.title}>{itemName}</Text>
+            <Text>Information:</Text>
+          </View>
         </View>
-      </View>
 
-      <View style={styles.buttons}>
-        <ScheduledActionForm
-          scheduledHour={scheduledHour}
-          scheduledMinute={scheduledMinute}
-          scheduledDay={scheduledDay}
-          amountOfWaterMilliliters={amountOfWaterMilliliters}
-          setScheduledHour={(value) => setScheduledHour(value)}
-          setScheduledMinute={(value) => setScheduledMinute(value)}
-          setSheduledDay={(value) => setSheduledDay(value)}
-          setAmountOfWaterMilliliters={(value) => {
-            setAmountOfWaterMilliliters(value);
-          }}
-          action={action}
-        ></ScheduledActionForm>
-      </View>
+        <View style={styles.buttons}>
+          <ScheduledActionForm
+            scheduledDate={scheduledDate}
+            setScheduledDate={(value) => setScheduledDate(value)}
+            amountOfWaterMilliliters={amountOfWaterMilliliters}
+            setAmountOfWaterMilliliters={(value) => {
+              setAmountOfWaterMilliliters(value);
+            }}
+            action={action}
+          ></ScheduledActionForm>
+        </View>
       </ScrollView>
 
       <ConfirmButton
@@ -146,7 +132,7 @@ export default function Plant({ route }) {
         onPress={() => {
           ScheduleWatering();
         }}
-        text={'Schedule Action'}
+        text={"Schedule Action"}
       />
     </View>
   );

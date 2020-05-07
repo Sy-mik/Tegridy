@@ -2,55 +2,44 @@ import React, { useState, useEffect } from "react";
 import { GetSuggestedActionForPlant } from "../../services/apiCalls";
 import { View, Text, Image, StyleSheet, Button } from "react-native";
 import TextInputForm from "../../components/TextInputForm";
-import HoursPicker from "../../components/HoursPicker";
-import MinutesPicker from "../../components/MinutesPicker";
-import DaysPicker from "../../components/DaysPicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
+
 export default function ScheduledActionForm({
-  scheduledHour,
-  scheduledDay,
-  scheduledMinute,
+  scheduledDate,
+  setScheduledDate,
   amountOfWaterMilliliters,
-  setScheduledHour,
-  setScheduledMinute,
-  setSheduledDay,
   setAmountOfWaterMilliliters,
 }) {
-  return (
-    <View style={{ margin: 10 }}>
-      <Text style={{ fontSize: 30, fontWeight: '600' }}>Schedule action</Text>
-      <View>
-        <View style={styles.pickersContainer}>
-          <Text>Hour: </Text>
-          <HoursPicker
-            callBack={(value) => {
-              setScheduledHour(value);
-            }}
-            value={scheduledHour}
-          ></HoursPicker>
-          <Text> Minute: </Text>
-          <MinutesPicker
-            callBack={(value) => {
-              setScheduledMinute(value);
-            }}
-            value={scheduledMinute}
-          ></MinutesPicker>
-        </View>
-        <View style={styles.pickersContainer}>
-          <Text> Day: </Text>
-          <DaysPicker
-            callBack={(value) => setSheduledDay(value)}
-            value={scheduledDay}
-          ></DaysPicker>
-        </View>
-        <TextInputForm
-        label="Water in mililiters"
-        callback={(value) => {
-          setAmountOfWaterMilliliters(value);
-        }}
-        value={amountOfWaterMilliliters.toString()}
-      ></TextInputForm>
+  const [date, setDate] = useState(new Date());
 
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    setDate(currentDate);
+  };
+
+  console.log(amountOfWaterMilliliters);
+  return (
+    <View style={{ margin: 10, width: "100%" }}>
+      <Text style={{ fontSize: 30, fontWeight: "600" }}>Schedule action </Text>
+      <View style={{ flexDirection: "column", flex: 1 }}>
+        <TextInputForm
+          style={{ flex: 1 }}
+          label="Water in mililiters"
+          callback={(value) => {
+            setAmountOfWaterMilliliters(value);
+          }}
+          value={amountOfWaterMilliliters.toString()}
+        ></TextInputForm>
       </View>
+      <DateTimePicker
+        testID="dateTimePicker"
+        timeZoneOffsetInMinutes={0}
+        value={date}
+        mode={"datetime"}
+        is24Hour={true}
+        display="default"
+        onChange={onChange}
+      />
     </View>
   );
 }
@@ -69,17 +58,11 @@ const styles = StyleSheet.create({
     marginTop: -20,
     padding: 20,
   },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 20,
-  },
   title: {
     fontSize: 30,
     fontWeight: "bold",
   },
   pickersContainer: {
-    flex: 1,
     flexDirection: "row",
     marginTop: 20,
   },
