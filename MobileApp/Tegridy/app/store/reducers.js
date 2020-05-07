@@ -15,7 +15,6 @@ const scheduledDataReducer = (state = dataState, action) => {
 };
 
 const userPlantsReducer = (state = userPlants, action) => {
-    console.log('allplants')
     switch (action.type) {
         case FETCH_PLANTS:
             return {...state, data: action.data};

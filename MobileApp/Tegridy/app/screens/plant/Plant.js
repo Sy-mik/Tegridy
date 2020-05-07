@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Button } from "react-native";
+import { View, Text, Image, StyleSheet, Button, ScrollView } from "react-native";
 import Colors from "../../constants/Colors";
 import {
   GetSuggestedActionForPlant,
@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { fetchScheduled } from "../../store/actions";
 import { useNavigation } from '@react-navigation/native';
 import ScheduledActionForm from "../Scheduled/ScheduledActionForm";
+import ConfirmButton from "../../components/ConfirmButton";
 
 export default function Plant({ route }) {
   const { plant } = route.params;
@@ -36,7 +37,7 @@ export default function Plant({ route }) {
       headerRight: () => (
         <Text
           onPress={() => RemovePlant(plant.id).then(res=>FetchPlants())}
-          style={{ margin: 16, fontSize: '18px', fontWeight: 500 }}
+          style={{ margin: 10, fontSize: 18, fontWeight: '500' }}
         >
           Remove
         </Text>
@@ -110,6 +111,7 @@ export default function Plant({ route }) {
         justifyContent: "space-between",
       }}
     >
+      <ScrollView>
       <View style={styles.container}>
         <Image
           style={styles.modalImage}
@@ -137,14 +139,14 @@ export default function Plant({ route }) {
           action={action}
         ></ScheduledActionForm>
       </View>
+      </ScrollView>
 
-      <Button
+      <ConfirmButton
         disabled={loading}
         onPress={() => {
           ScheduleWatering();
         }}
-        color={Colors.acceptButtonColor}
-        title={loading ? "Loading" : "Schedule Action"}
+        text={'Schedule Action'}
       />
     </View>
   );

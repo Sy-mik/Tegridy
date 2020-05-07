@@ -7,72 +7,90 @@ import {
   TouchableHighlight,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import { Feather } from "@expo/vector-icons";
+import Colors from "./../../constants/Colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function ScheduledItemCard(item) {
   const navigation = useNavigation();
   item = item.children;
+  let weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
   let date = new Date(item.scheduledDate);
-
-  let convertedDate = date.getDate() + "/" +
-    date.getMonth() + " " +date.getHours() + ":" + date.getMinutes();
+  let convertedDate =
+    weekday[date.getDay()] + " " + date.getHours() + ":" + date.getMinutes();
 
   return (
-    <View style={styles.card}>
-      <TouchableHighlight
-        underlayColor="#fff"
-        style={styles.cardHighlight}
-        onPress={() => navigation.navigate("MyModal", { item })}
+    <TouchableOpacity
+      activeOpacity={0.7}
+      style={{ width: 160, height: 150, marginLeft: 30 }}
+      onPress={() => navigation.push("Scheduled", { item })}
+    >
+      <View
+        style={{
+          width: 160,
+          height: 150,
+        }}
       >
+        
+        <Image style={styles.cardImage} source={{ uri: item.imageUri }} />
         <View>
-          <Image
-            style={styles.cardImage}
-            resizeMode="cover"
-            source={{ uri: item.imageUri }}
+          <Feather
+            style={{
+              position: "absolute",
+              bottom:5,
+              color:'white',
+              marginLeft: 5,
+              marginRight: "auto",
+            }}
+            size={20}
+            // color="white"
+            name="cloud-drizzle"
           />
-          <View style={styles.cardContent}>
-            <Text style={styles.cardTitle}>{item.name}</Text>
-            <Text style={styles.cardTitle}>{convertedDate}</Text>
-            <Text style={styles.cardTitle}>
-              {item.amountOfWaterMilliliters}ml
-            </Text>
-          </View>
         </View>
-      </TouchableHighlight>
-    </View>
+        <View style={styles.iconsInfo}>
+          <Text style={styles.cardTitle}>{item.name} </Text>
+        </View>
+        <View style={styles.iconsInfo}>
+          <Text style={styles.dayOfWeekText}>{convertedDate} </Text>
+        </View>
+      </View>
+    </TouchableOpacity>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    marginTop: 20,
-    marginBottom: 20,
-    margin: "auto",
-    height: 450,
-    width: 400,
-    borderRadius: 30,
-    borderColor: "#323232",
-    shadowColor: "rgba(0, 0, 0, 0.25)",
-    shadowRadius: 25,
-  },
-  cardHighlight: {
-    height: 450,
-    width: 400,
-    borderRadius: 30,
-  },
-  cardContent: {
+  iconsInfo: {
+    marginLeft: 5,
     flex: 1,
-    justifyContent: "space-between",
     flexDirection: "row",
+    marginTop: 5,
+  },
+  dayOfWeekText: {
+    color: Colors.lessImportantText,
+  },
+
+  cardHighlight: {
+    width: 150,
+    height: 120,
+    borderRadius: 10,
   },
   cardImage: {
-    width: 400,
-    height: 400,
-    borderTopLeftRadius: 30,
-    borderTopEndRadius: 30,
+    borderRadius: 10,
+    // position: "absolute",
+    // flex: 1,
+    width: 160,
+    height: 100,
   },
   cardTitle: {
+    flex: 1,
     fontSize: 20,
-    padding: 10,
-    marginRight: 20,
   },
 });

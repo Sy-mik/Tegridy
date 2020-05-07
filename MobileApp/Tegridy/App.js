@@ -57,7 +57,6 @@ export default function App(props) {
         <NavigationContainer theme={MyTheme} ref={containerRef} initialState={initialNavigationState}>
           <RootStack.Navigator mode="modal" headerMode="none">
             <RootStack.Screen name="Main" component={BottomTabNavigator} />
-            <RootStack.Screen name="MyModal" component={ScheduledItemModal} />
 
         </RootStack.Navigator>
         </NavigationContainer>

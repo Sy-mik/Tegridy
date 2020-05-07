@@ -3,7 +3,9 @@ import * as React from 'react';
 import { useDispatch } from "react-redux";
 import * as signalR from '@aspnet/signalr';
 
-const webApiUri = 'http://ad40d802.ngrok.io/'
+ const webApiUri = 'http://5b0dc8cb.ngrok.io/'
+//const webApiUri = 'http://localhost:5000/'
+
 const plantsActionsHub = 'plantsActionsHub/'
 const plantsUri = 'Plants/';
 const userUri = 'user/';

@@ -1,15 +1,43 @@
 import * as React from "react";
 import { View, Text, Image, StyleSheet, Button } from "react-native";
-import {  InvokeAction } from "../../services/apiCalls";
+import { InvokeAction } from "../../services/apiCalls";
 import { RemoveScheduled } from "../../services/apiCalls";
 import FetchScheduled from "../../store/FetchScheduled";
 import { useDispatch } from "react-redux";
+import { Feather } from "@expo/vector-icons";
+import ConfirmButton from "../../components/ConfirmButton";
 
 export default function ScheduledItemModal({ route, navigation }) {
   const { item } = route.params;
   const imageUri = item.imageUri;
   const itemName = item.name;
   const dispatch = useDispatch();
+
+  let weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+  let date = new Date(item.scheduledDate);
+  let convertedDate =
+    weekday[date.getDay()] + " " + date.getHours() + ":" + date.getMinutes();
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <Text
+          onPress={() => RemoveItem(item.id)}
+          style={{ margin: 10, fontSize: 18, fontWeight: "500" }}
+        >
+          Remove
+        </Text>
+      ),
+    });
+  }, []);
 
   function RemoveItem(auditId) {
     RemoveScheduled(auditId).then((res) => {
@@ -32,25 +60,57 @@ export default function ScheduledItemModal({ route, navigation }) {
           source={{ uri: imageUri }}
         ></Image>
         <View style={styles.informationsContainer}>
-          <Text style={styles.title}>{itemName}</Text>
-          <Text>Information:</Text>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              alignContent: "space-between",
+            }}
+          >
+            <Text style={styles.title}>{itemName}</Text>
+            <View
+              style={{
+                flex: 1,
+                alignItems: "flex-end",
+                alignContent:'flex-end',
+              }}
+            >
+              <Feather
+                size={20}
+                // color="white"
+                name="cloud-drizzle"
+              />
+            </View>
+          </View>
+          <View style={{ flex: 5 }}>
+            <Text style={{ fontSize: 16 }}>{convertedDate}</Text>
+          </View>
         </View>
       </View>
 
-      <View style={styles.buttons}>
+      <ConfirmButton
+        text={"Confirm"}
+        onPress={() => InvokeAction(item.auditId)}
+      >
+        {" "}
+      </ConfirmButton>
+
+      {/* <View style={styles.buttons}>
+        
         <Button
           color="#808080"
           title="Remove"
           onPress={() => RemoveItem(item.auditId)}
         />
         <Button title="Start" onPress={() => InvokeAction(item.auditId)} />
-      </View>
+      </View> */}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: "column",
   },
   modalImage: {
@@ -58,10 +118,13 @@ const styles = StyleSheet.create({
   },
 
   informationsContainer: {
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "flex-start",
     backgroundColor: "#fff",
     borderRadius: 30,
     marginTop: -20,
-    padding: 20,
+    padding: 15,
   },
   buttons: {
     flexDirection: "row",
@@ -69,6 +132,8 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
+    flex: 1,
+    margin: 5,
     fontSize: 30,
     fontWeight: "bold",
   },

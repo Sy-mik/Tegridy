@@ -17,14 +17,7 @@ export default function ScheduledActionForm({
 }) {
   return (
     <View style={{ margin: 10 }}>
-      <Text style={{ fontSize: 30, fontWeight: "600" }}>Schedule action</Text>
-      <TextInputForm
-        label="Water in mililiters"
-        callback={(value) => {
-          setAmountOfWaterMilliliters(value);
-        }}
-        value={amountOfWaterMilliliters}
-      ></TextInputForm>
+      <Text style={{ fontSize: 30, fontWeight: '600' }}>Schedule action</Text>
       <View>
         <View style={styles.pickersContainer}>
           <Text>Hour: </Text>
@@ -49,6 +42,14 @@ export default function ScheduledActionForm({
             value={scheduledDay}
           ></DaysPicker>
         </View>
+        <TextInputForm
+        label="Water in mililiters"
+        callback={(value) => {
+          setAmountOfWaterMilliliters(value);
+        }}
+        value={amountOfWaterMilliliters.toString()}
+      ></TextInputForm>
+
       </View>
     </View>
   );

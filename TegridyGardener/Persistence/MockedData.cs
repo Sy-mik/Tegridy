@@ -34,9 +34,41 @@ namespace Model
                     },
                     PlantInfo = plantInfo
                 };
+                
                 public static ScheduledAction scheduledAction = new ScheduledAction()
                 {
                     Id = 1,
+                    Plant = plant,
+                    Recommendation = "",
+                    IsDone = false,
+                    ScheduledDate = DateTime.Now.AddHours(3),
+                    AmountOfWaterMilliliters = 24
+                };
+                
+                 
+                public static ScheduledAction scheduledAction1 = new ScheduledAction()
+                {
+                    Id = 2,
+                    Plant = plant,
+                    Recommendation = "",
+                    IsDone = false,
+                    ScheduledDate = DateTime.Now.AddHours(3),
+                    AmountOfWaterMilliliters = 24
+                }; 
+                public static ScheduledAction scheduledAction2 = new ScheduledAction()
+                {
+                    Id = 3,
+                    Plant = plant,
+                    Recommendation = "",
+                    IsDone = false,
+                    ScheduledDate = DateTime.Now.AddHours(3),
+                    AmountOfWaterMilliliters = 24
+                };
+                
+                 
+                public static ScheduledAction scheduledAction3 = new ScheduledAction()
+                {
+                    Id = 4,
                     Plant = plant,
                     Recommendation = "",
                     IsDone = false,
@@ -57,8 +89,7 @@ namespace Model
                             Plants = new List<Plant>(){plant}
                         }
                     },
-                    PlantsAudits = { scheduledAction }
+                    PlantsAudits = { scheduledAction,scheduledAction1,scheduledAction2,scheduledAction3 }
                 };
-
     }
 }

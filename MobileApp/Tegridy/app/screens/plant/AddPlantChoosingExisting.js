@@ -29,7 +29,7 @@ export default function(){
 return (
       <View style={styles.mainContainer}>
         <View style={{ marginLeft: 20, marginRight: 20 }}>
-        {/* <Text style={{ fontSize: 30, fontWeight: '600', marginTop: 5 }}>Pick Existing</Text> */}
+        <Text style={{ fontSize: 30, fontWeight: '600', marginTop: 5 }}>Pick Existing</Text>
         <ScrollView>
           <FlatList
             data={list}

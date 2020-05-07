@@ -28,7 +28,7 @@ export default function PlantList(){
       headerRight: () => (
     <Text
       onPress={() => navigation.push('Choose Type')}
-      style={{ marginRight: 16, fontSize: '18px', fontWeight: 500 }}
+      style={{ marginRight: 16, fontSize: 18, fontWeight: '500' }}
       >
         Add
     </Text>),
