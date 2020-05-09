@@ -9,12 +9,14 @@ import Colors from "../../constants/Colors";
 import TextInputForm from "../../components/TextInputForm";
 import { AddPlant } from "../../services/apiCalls";
 import FetchPlants from "../../store/FetchPlants";
+import ConfirmButton from "../../components/ConfirmButton";
 
 export default function AddPlantForm({ route }) {
+  const [loading, setLoading] = React.useState(false);
   const [selected, setSelected] = React.useState(-1);
   const [selectedName, setSelectedName] = React.useState("");
-  const [selectedWatering, setSelectedWatering] = React.useState();
-  const [selectedWateringPeriod, setselectedWateringPeriod] = React.useState();
+  const [selectedWatering, setSelectedWatering] = React.useState(0);
+  const [selectedWateringPeriod, setSelectedWateringPeriod] = React.useState(0);
   const [selectedHour, setSelectedHour] = useState(12);
   const [selectedMinute, setSelectedMinute] = useState(0);
 
@@ -24,7 +26,7 @@ export default function AddPlantForm({ route }) {
       setSelected(plant.id);
       setSelectedName(plant.name);
       setSelectedWatering(plant.rule.waterInMilliliters);
-      setselectedWateringPeriod(plant.rule.hoursBetweenWatering);
+      setSelectedWateringPeriod(plant.rule.hoursBetweenWatering);
     }
   }, []);
 
@@ -37,39 +39,11 @@ export default function AddPlantForm({ route }) {
       wateringMinute: selectedMinute,
       groupId: 0,
     };
-    await AddPlant(plant).then((res) => FetchPlants());
-  }
-
-  var onMinuteChangeCallback = (text) => {
-    setSelectedMinute(text);
-  };
-
-  var onHoursChangeCallback = (text) => {
-    setSelectedHour(text);
-  };
-
-  function onChangeWateringPeriod(text) {
-    var newText = getParsedNumbers(text, selectedWateringPeriod);
-    setselectedWateringPeriod(newText);
-  }
-
-  function onChangeWatering(text) {
-    var newText = getParsedNumbers(text, selectedWatering);
-    setSelectedWatering(newText);
-  }
-
-  function getParsedNumbers(text, original) {
-    let newText = "";
-    let numbers = "0123456789";
-
-    for (var i = 0; i < text.length; i++) {
-      if (numbers.indexOf(text[i]) > -1) {
-        newText = newText + text[i];
-      } else {
-        newText = original;
-      }
-    }
-    return newText;
+    setLoading(true);
+    await AddPlant(plant).then((res) => {
+      FetchPlants();
+      setLoading(false);
+    });
   }
 
   return (
@@ -81,10 +55,6 @@ export default function AddPlantForm({ route }) {
       }}
     >
       <ScrollView style={styles.mainContainer}>
-        <Text style={{ fontSize: 30, fontWeight: "600", marginTop: 5 }}>
-          Specify
-        </Text>
-
         <TextInputForm
           label="Name"
           callback={setSelectedName}
@@ -93,16 +63,18 @@ export default function AddPlantForm({ route }) {
 
         <TextInputForm
           label="Watering in mililiters"
-          callback={onChangeWatering}
-          value={selectedWatering}
+          callback={setSelectedWatering}
+          value={selectedWatering.toString()}
+          keyboardType="numeric"
         ></TextInputForm>
 
         <TextInputForm
           label="Hours between watering"
-          callback={onChangeWateringPeriod}
-          value={selectedWateringPeriod}
+          callback={setSelectedWateringPeriod}
+          value={selectedWateringPeriod.toString()}
+          keyboardType="numeric"
         ></TextInputForm>
-
+        {/* 
         <View style={{ alignSelf: "center" }}>
           <View style={styles.pickersContainer}>
             <Text> Hour: </Text>
@@ -110,15 +82,15 @@ export default function AddPlantForm({ route }) {
             <Text> Minute: </Text>
             <MinutesPicker>{onMinuteChangeCallback}</MinutesPicker>
           </View>
-        </View>
+        </View> */}
       </ScrollView>
 
       <View>
-        <Button
+        <ConfirmButton
+          loading={loading}
+          text="Add"
           onPress={() => handleCreateNewPlant()}
-          color={Colors.acceptButtonColor}
-          title="Add"
-        />
+        ></ConfirmButton>
       </View>
     </View>
   );

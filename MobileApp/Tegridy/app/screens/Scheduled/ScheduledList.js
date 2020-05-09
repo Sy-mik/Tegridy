@@ -16,16 +16,23 @@ import FetchScheduled from "../../store/FetchScheduled";
 
 export default function ScheduledList() {
   const dispatch = useDispatch();
+  const [listIndex, setListIndex] = useState(0);
+  const [dayOfTheAction, setDayOfTheAction] = useState("");
   const [list, setList] = useState([]);
   const dataReducer = useSelector((state) => state.scheduledDataReducer);
   const { data } = dataReducer;
   const [refreshing, setRefreshing] = React.useState(false);
 
-  function wait(timeout) {
-    return new Promise((resolve) => {
-      setTimeout(resolve, timeout);
-    });
-  }
+  let weekday = [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ];
+
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     FetchScheduled(dispatch);
@@ -36,6 +43,26 @@ export default function ScheduledList() {
     FetchScheduled(dispatch);
   }, []);
 
+  function calculateDayOfTheAction() {
+    let item = data[listIndex];
+    let date = new Date(item.scheduledDate);
+    setDayOfTheAction(
+      weekday[date.getDay()] + " " + parseNumber(date.getDate().toString())
+    );
+  }
+  function parseNumber(number) {
+    if (number[number.length] === 1) {
+      number += "st";
+    } else if (number[number.length] === 2) {
+      number += "nd";
+    } else if (number[number.length] === 3) {
+      number += "rd";
+    } else {
+      number += "th";
+    }
+    return number;
+  }
+
   return (
     <SafeAreaView>
       <ScrollView
@@ -44,8 +71,14 @@ export default function ScheduledList() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-          <Text style={styles.header1}>This week</Text>
+        <Text style={styles.header1}>{dayOfTheAction}</Text>
         <FlatList
+          onScroll={(e) => {
+            let offset = e.nativeEvent.contentOffset.x;
+            let index = parseInt(offset / 190); // your cell height
+            setListIndex(index);
+            calculateDayOfTheAction();
+          }}
           horizontal={true}
           data={data}
           showsHorizontalScrollIndicator={false}

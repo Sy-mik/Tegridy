@@ -1,12 +1,6 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
 import {
   GetSuggestedActionForPlant,
   AddPlantAction,
@@ -30,6 +24,7 @@ export default function Plant({ route }) {
   const [loading, setLoading] = React.useState(false);
   const [action, setAction] = React.useState("");
   const [scheduledDate, setScheduledDate] = React.useState(new Date());
+  const [selectedAction, setSelectedAction] = React.useState(0);
   const [
     amountOfWaterMilliliters,
     setAmountOfWaterMilliliters,
@@ -71,8 +66,9 @@ export default function Plant({ route }) {
   }, []);
 
   function ScheduleWatering() {
+    setLoading(true);
     action.scheduledDate = scheduledDate;
-    action.amountOfWaterMilliliters = new Number(amountOfWaterMilliliters);
+    action.amountOfWaterMilliliters = amountOfWaterMilliliters;
     // refresh Scheduled list
     AddPlant(action);
 
@@ -80,6 +76,7 @@ export default function Plant({ route }) {
       // You can await here
       setLoading(true);
       await AddPlantAction(action).then((res) => {
+        setLoading(false);
         fetchData();
       });
     }
@@ -116,6 +113,8 @@ export default function Plant({ route }) {
 
         <View style={styles.buttons}>
           <ScheduledActionForm
+            selectedAction={selectedAction}
+            setSelectedAction={setSelectedAction}
             scheduledDate={scheduledDate}
             setScheduledDate={(value) => setScheduledDate(value)}
             amountOfWaterMilliliters={amountOfWaterMilliliters}
@@ -126,14 +125,15 @@ export default function Plant({ route }) {
           ></ScheduledActionForm>
         </View>
       </ScrollView>
-
-      <ConfirmButton
-        disabled={loading}
-        onPress={() => {
-          ScheduleWatering();
-        }}
-        text={"Schedule Action"}
-      />
+      {selectedAction != 0 ? (
+        <ConfirmButton
+          loading={loading}
+          onPress={() => {
+            ScheduleWatering();
+          }}
+          text={"Schedule Action"}
+        />
+      ) : null}
     </View>
   );
 }

@@ -1,12 +1,22 @@
 import * as React from "react";
-import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
+import {
+  TouchableOpacity,
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import Colors from "../constants/Colors";
 
-export default function ConfirmButton({ text, onPress }) {
+export default function ConfirmButton({ text, onPress, loading }) {
   return (
     <TouchableOpacity onPress={() => onPress()}>
       <View style={styles.button}>
-        <Text style={styles.buttonText}>{text}</Text>
+        {loading ? (
+          <ActivityIndicator size="small" color="white"></ActivityIndicator>
+        ) : (
+          <Text style={styles.buttonText}>{text}</Text>
+        )}
       </View>
     </TouchableOpacity>
   );

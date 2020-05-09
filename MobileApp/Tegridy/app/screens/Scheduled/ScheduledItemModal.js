@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, StyleSheet, Button } from "react-native";
 import { InvokeAction } from "../../services/apiCalls";
 import { RemoveScheduled } from "../../services/apiCalls";
@@ -12,6 +12,7 @@ export default function ScheduledItemModal({ route, navigation }) {
   const imageUri = item.imageUri;
   const itemName = item.name;
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   let weekday = [
     "Sunday",
@@ -72,7 +73,7 @@ export default function ScheduledItemModal({ route, navigation }) {
               style={{
                 flex: 1,
                 alignItems: "flex-end",
-                alignContent:'flex-end',
+                alignContent: "flex-end",
               }}
             >
               <Feather
@@ -89,21 +90,13 @@ export default function ScheduledItemModal({ route, navigation }) {
       </View>
 
       <ConfirmButton
+        loading={loading}
         text={"Confirm"}
-        onPress={() => InvokeAction(item.auditId)}
-      >
-        {" "}
-      </ConfirmButton>
-
-      {/* <View style={styles.buttons}>
-        
-        <Button
-          color="#808080"
-          title="Remove"
-          onPress={() => RemoveItem(item.auditId)}
-        />
-        <Button title="Start" onPress={() => InvokeAction(item.auditId)} />
-      </View> */}
+        onPress={() => {
+          setLoading(true);
+          InvokeAction(item.auditId);
+        }}
+      ></ConfirmButton>
     </View>
   );
 }

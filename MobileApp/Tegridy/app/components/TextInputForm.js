@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TextInput, Text, View, StyleSheet } from "react-native";
 
-export default function ({ label, callback, value }) {
+export default function ({ label, callback, value, keyboardType }) {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.inputLabel}>{label}</Text>
@@ -17,7 +17,7 @@ export default function ({ label, callback, value }) {
           style={styles.textInputField}
           onChangeText={(text) => callback(text)}
           value={value}
-          keyboardType={'numeric'}
+          keyboardType={keyboardType}
         />
       </View>
     </View>
