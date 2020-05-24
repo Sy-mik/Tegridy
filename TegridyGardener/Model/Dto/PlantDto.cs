@@ -20,6 +20,7 @@ namespace Model.Dto
 
         public int GroupId { get; set; }
         
-       // public IEnumerable<> ScheduledActions { get; set; }
+        public string ImageName { get; set; }
+        
     }
 }

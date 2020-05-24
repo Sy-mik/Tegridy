@@ -37,7 +37,8 @@ namespace BusinessLogic
         public IEnumerable<Plant> GetUserPlants(int userId)
         {
             var plants = _dbContext.Users.Include(x=>x.PlantsGroups)
-                .ThenInclude(x=>x.Plants).SelectMany(x=>x.PlantsGroups.SelectMany(y=>y.Plants))
+                .ThenInclude(x=>x.Plants)
+                .SelectMany(x=>x.PlantsGroups.SelectMany(y=>y.Plants))
                 .ToList();
             return plants;
         }

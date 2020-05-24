@@ -15,8 +15,7 @@ namespace Model
                     Name = "Test",
                     Description = "Test",
                     Rule = new Rule()
-                    {
-                        HoursBetweenWatering = 24,
+                    { Id = 1,
                         WaterInMilliliters = 100
                     }
                 };
@@ -28,8 +27,7 @@ namespace Model
                     ImageUri = "https://www.weranda.pl/cache/700-800/bfe41a533e4ae75fe529cc4ccb6c5a63/5532_12514559960.jpg",
                     Rule = new Rule()
                     {
-                        Id = 1,
-                        HoursBetweenWatering = 12,
+                        Id = 2,
                         WaterInMilliliters = 24
                     },
                     PlantInfo = plantInfo

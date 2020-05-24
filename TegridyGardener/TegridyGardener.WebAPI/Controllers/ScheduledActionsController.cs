@@ -39,8 +39,28 @@ namespace TegridyGardener.WebAPI.Controllers
             _scheduledActionService.Invoke(actionId);
             return Ok();
         }
-
         
+        [HttpPut]
+        [Route("{actionId}/ScheduledDate")]
+        [EnableCors("AllowAll")]
+        public IActionResult UpdateScheduledDate(int actionId, [FromBody] PlantsActionDto dto)
+        {
+            dto.Id = actionId;
+            _scheduledActionService.UpdateDate(dto);
+            return Ok();
+        }
+        
+        [HttpPut]
+        [Route("{actionId}/Status")]
+        [EnableCors("AllowAll")]
+        public IActionResult MarkAsDone(int actionId)
+        {
+            PlantsActionDto dto = new PlantsActionDto();
+            dto.Id = actionId;
+            _scheduledActionService.MarkAsDone(dto);
+            return Ok();
+        }
+
         [HttpGet]
         [Route("{actionId}")]
         [EnableCors("AllowAll")]
@@ -60,7 +80,6 @@ namespace TegridyGardener.WebAPI.Controllers
         }
         
         [HttpPost]
-        [Route("")]
         [EnableCors("AllowAll")]
         public IActionResult AddActionForPlant([FromBody] PlantsActionDto actionDto)
         {

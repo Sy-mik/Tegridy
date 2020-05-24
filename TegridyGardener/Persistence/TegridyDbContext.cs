@@ -1,6 +1,6 @@
+using System.Collections.ObjectModel;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.EntityFrameworkCore.Internal;
 using Model;
 
@@ -8,16 +8,20 @@ namespace Persistence
 {
     public class TegridyDbContext : DbContext
     {
-        
-        public TegridyDbContext(DbContextOptions<TegridyDbContext> options) :base(options)
+        private object x = new object();
+
+        public TegridyDbContext(DbContextOptions<TegridyDbContext> options) : base(options)
         {
-            if (Users.Count()==0)
+            if (!Users.Any())
             {
-                PlantsAudit.Add(MockedData.scheduledAction);
-                PlantsInfo.Add(MockedData.plantInfo);
-                Plants.Add(MockedData.plant);
-                Users.Add(MockedData.user);
-                this.SaveChanges();
+                lock (x)
+                {
+                    PlantsAudit.Add(MockedData.scheduledAction);
+                    PlantsInfo.Add(MockedData.plantInfo);
+                    Plants.Add(MockedData.plant);
+                    Users.Add(MockedData.user);
+                    this.SaveChanges();
+                }
             }
         }
 
@@ -31,16 +35,16 @@ namespace Persistence
 
         public DbSet<User> Users { get; set; }
 
-        
+
         public DbSet<Rule> Rules { get; set; }
-        
-        
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
         }
     }
-    
+
 //    public class TegridyContextFacotry : IDesignTimeDbContextFactory<TegridyDbContext>
 //    {
 //

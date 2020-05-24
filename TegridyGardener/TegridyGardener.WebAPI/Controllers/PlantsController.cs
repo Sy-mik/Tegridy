@@ -1,13 +1,16 @@
 using System;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using BusinessLogic;
 using BusinessLogic.FileHandling;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Model.Dto;
+using Persistence;
 
 namespace TegridyGardener.WebAPI.Controllers
 {
@@ -19,19 +22,22 @@ namespace TegridyGardener.WebAPI.Controllers
     {
         private readonly IPlantsGroupService _groupService;
         private readonly IPlantCrudService _plantCrudService;
-        private readonly IFileHandler _fileHandler;
         private readonly IPlantInfoService _plantInfoService;
+        private readonly IHostingEnvironment _env;
+        private readonly TegridyDbContext _dbContext;
 
         public PlantsController(
             IPlantsGroupService groupService,
-            IPlantCrudService plantCrudService, 
-            IFileHandler fileHandler, 
-            IPlantInfoService plantInfoService)
+            IPlantCrudService plantCrudService,
+            IPlantInfoService plantInfoService,
+            IHostingEnvironment env,
+            TegridyDbContext dbContext)
         {
             _groupService = groupService;
             _plantCrudService = plantCrudService;
-            _fileHandler = fileHandler;
             _plantInfoService = plantInfoService;
+            _env = env;
+            _dbContext = dbContext;
         }
 
         [HttpGet]
@@ -52,21 +58,27 @@ namespace TegridyGardener.WebAPI.Controllers
             return Ok();
         }
 
-        [HttpPost]
-        public IActionResult AddPlant([FromBody] PlantDto plantDto)
+        [HttpGet]
+        [Route("test")]
+        public IActionResult Test()
         {
-            var file = handleGettingFile();
-            
-            if (file != null)
-            {
-                var filePath = _fileHandler.SaveFile(file);
-                plantDto.FilePath = filePath;
-            }
+            var path = Path.Combine(_env.ContentRootPath, $"clarissa-carbungco-chSJTnKTuIs-unsplash.jpg");
 
+            var imageFileStream = System.IO.File.OpenRead(path);
+            return File(imageFileStream, "image/jpeg");
+        }
+
+        [HttpPost]
+        public IActionResult AddPlant([FromForm] PlantDto plantDto)
+        {
+            var fileName = Guid.NewGuid();
+            HandleGettingFile(fileName);
+            plantDto.ImageName = fileName.ToString();
+            
             _plantCrudService.AddPlant(plantDto);
             return Ok();
         }
-        
+
         [HttpDelete]
         [Route("{plantId}")]
         public IActionResult RemovePlant(Guid plantId)
@@ -75,7 +87,6 @@ namespace TegridyGardener.WebAPI.Controllers
 
             return Ok();
         }
-
 
         [HttpGet]
         [Route("types")]
@@ -90,31 +101,23 @@ namespace TegridyGardener.WebAPI.Controllers
         [Route("group/{userId}/{name}")] // Use JWT to get user Id
         public IActionResult AddGroup(int userId, string name)
         {
-            _groupService.CreateGroup(userId ,name);
+            _groupService.CreateGroup(userId, name);
             return Ok();
         }
 
-        private FileStream handleGettingFile()
+        private async void HandleGettingFile(Guid fileName)
         {
-            FileStream stream;
+            if (!Request.Form.Files.Any())
+            {
+                return;
+            }
             var file = Request.Form.Files[0];
-                var folderName = Path.Combine("Resources", "Images");
-                var pathToSave = Path.Combine(Directory.GetCurrentDirectory(), folderName);
- 
-                if (file.Length > 0)
-                {
-                    var fileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
-                    var fullPath = Path.Combine(pathToSave, fileName);
-                    var dbPath = Path.Combine(folderName, fileName);
- 
-                    using (stream = new FileStream(fullPath, FileMode.Create))
-                    {
-                        file.CopyTo(stream);
-                        return stream;
-                    }
-                }
-            
-                return null;
-                }
+            var imagesPath = Path.Combine(_env.ContentRootPath, "images");
+            var filePath = Path.Combine(imagesPath, fileName.ToString()+".jpg");
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(fileStream);
+            }
+        }
     }
 }

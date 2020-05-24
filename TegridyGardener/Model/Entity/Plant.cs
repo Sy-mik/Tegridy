@@ -20,5 +20,7 @@ namespace Model
         public string ImageUri { get; set; }
         
         public Rule Rule { get; set; }
+
+        public string ImageName { get; set; }
     }
 }

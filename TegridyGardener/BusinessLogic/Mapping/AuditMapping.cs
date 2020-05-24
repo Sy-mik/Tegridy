@@ -10,35 +10,36 @@ namespace BusinessLogic.Mapping
         {
             var imageUri = action.Plant?.ImageUri;
 
-            if (string.IsNullOrEmpty(imageUri))
+            if (string.IsNullOrEmpty(imageUri) && action.Plant.PlantInfo != null)
             {
-                imageUri = action.Plant?.PlantInfo.ImageUri;
+                imageUri = action.Plant?.PlantInfo?.ImageUri;
             }
-            
+
             PlantsActionDto dto = new PlantsActionDto()
             {
                 Recommendations = action.Recommendation,
-                AuditId = action.Id,
+                Id = action.Id,
                 Name = action.Plant.Name,
                 ImageUri = imageUri,
-                PlantId = action.Plant.Id.ToString(),
+                ImageName = action.Plant.ImageName,
+                PlantId = action.Plant.Id,
                 ScheduledDate = action.ScheduledDate,
                 AmountOfWaterMilliliters = action.AmountOfWaterMilliliters,
                 ExecutionDate = action.ExecutionDate
             };
-            
+
             return dto;
         }
-        
+
         public static ScheduledAction ToEntity(this PlantsActionDto dto)
         {
             ScheduledAction action = new ScheduledAction()
             {
-                PlantId = new Guid(dto.PlantId),
+                PlantId = dto.PlantId,
                 ScheduledDate = dto.ScheduledDate,
                 AmountOfWaterMilliliters = dto.AmountOfWaterMilliliters,
             };
-            
+
             return action;
         }
     }

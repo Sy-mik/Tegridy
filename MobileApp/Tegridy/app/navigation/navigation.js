@@ -44,12 +44,18 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       >
         {() => (
-          <HomeStack.Navigator>
+          <HomeStack.Navigator
+          //  headerMode="none"
+          >
             <HomeStack.Screen
               name="Scheduled items"
               component={ScheduledList}
             />
-            <HomeStack.Screen name="Scheduled" component={ScheduledItemModal} />
+            <HomeStack.Screen
+              headerMode="screen"
+              name="Scheduled"
+              component={ScheduledItemModal}
+            />
           </HomeStack.Navigator>
         )}
       </BottomTab.Screen>

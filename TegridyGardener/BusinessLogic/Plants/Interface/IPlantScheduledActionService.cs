@@ -15,6 +15,10 @@ namespace BusinessLogic
 
         void Invoke(int auditId);
 
+        void UpdateDate(PlantsActionDto dto);
+
+        void MarkAsDone(PlantsActionDto dto);
+
         void Remove(int auditId);
     }
 }

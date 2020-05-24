@@ -49,7 +49,8 @@ namespace BusinessLogic
             var plant = new Plant
             {
                 Name = plantDto.Name,
-                PlantInfo = plantInfo
+                PlantInfo = plantInfo,
+                ImageName =  plantDto.ImageName
             };
 
             return plant;

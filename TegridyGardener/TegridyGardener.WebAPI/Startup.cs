@@ -38,7 +38,8 @@ namespace TegridyGardener.WebAPI
             services.AddTransient<IFileHandler, FileHandler>();
             services.AddTransient<IPlantInfoService, PlantInfoService>();
             services.AddTransient<IUserAuthService, UserAuthService>();
-
+            services.AddTransient<IPlantsRulesService, PlantsRulesService>();
+            
             services.AddDbContext<TegridyDbContext>
             (options =>
                 //options.UseSqlServer(Configuration["ConnectionString:master"]));

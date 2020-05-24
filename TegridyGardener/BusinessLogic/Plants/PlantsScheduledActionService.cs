@@ -12,7 +12,7 @@ namespace BusinessLogic
     public class PlantsScheduledActionService : IPlantScheduledActionService
     {
         private readonly TegridyDbContext _dbContext;
-        
+
         public PlantsScheduledActionService(TegridyDbContext dbContext)
         {
             _dbContext = dbContext;
@@ -20,27 +20,49 @@ namespace BusinessLogic
 
         public void AddPlantsAction(User user, PlantsActionDto plantsActionDto)
         {
-            var plantId = new Guid(plantsActionDto.PlantId);
-            
+            if (plantsActionDto.Days != Days.NONE)
+            {
+                try
+                {
+                    var plant = _dbContext.Plants.FirstOrDefault(x =>
+                        x.Id == plantsActionDto.PlantId);
+
+                    var rule = new Rule()
+                    {
+                        Days = plantsActionDto.Days,
+                        WaterInMilliliters = plantsActionDto.AmountOfWaterMilliliters
+                    };
+
+                    plant.Rule = rule;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+
             var action = new ScheduledAction
             {
                 ImagePath = plantsActionDto.ImageUri,
                 AmountOfWaterMilliliters = plantsActionDto.AmountOfWaterMilliliters,
-                ScheduledDate = plantsActionDto.ScheduledDate 
+                ScheduledDate = plantsActionDto.ScheduledDate
             };
-            
-            action.PlantId = plantId;
-            
+
+            action.PlantId = plantsActionDto.PlantId;
+
             user.PlantsAudits.Add(action);
+
             
             _dbContext.SaveChanges();
+
+            var rules = _dbContext.Rules.ToString();
         }
 
         public PlantsActionDto GetSuggestedActionForPlant(Guid plantId)
         {
             var lastAction = _dbContext.PlantsAudit
                 .Include(x => x.Plant)
-                .ThenInclude(x=>x.Rule)
+                .ThenInclude(x => x.Rule)
                 .OrderByDescending(x => x.Id)
                 .FirstOrDefault(x => x.Plant.Id.Equals(plantId));
 
@@ -69,36 +91,36 @@ namespace BusinessLogic
             };
             return newAction;
         }
+
         // Ogarnij kiedy scheduled action jest null
         public DateTime CalculateUTCDateOfNextAction(ScheduledAction lastAction)
         {
-            var dateOfLastAction = lastAction.ExecutionDate;
-            var hoursBetweenWatering = lastAction.Plant.Rule.HoursBetweenWatering;
+//            var dateOfLastAction = lastAction.ExecutionDate;
+//            var hoursBetweenWatering = lastAction.Plant.Rule;
+//
+//            var dateOfNextAction = dateOfLastAction?.AddHours(hoursBetweenWatering) ?? DateTime.UtcNow.AddMinutes(10);
+//
+//            if (dateOfNextAction <= DateTime.UtcNow)
+//            {
+//                dateOfNextAction = DateTime.UtcNow.AddMinutes(10);
+//            }
 
-            var dateOfNextAction = dateOfLastAction?.AddHours(hoursBetweenWatering) ?? DateTime.UtcNow.AddMinutes(10);
-
-            if (dateOfNextAction <= DateTime.UtcNow)
-            {
-                dateOfNextAction = DateTime.UtcNow.AddMinutes(10);
-            }
-
-            return dateOfNextAction;
+            return DateTime.UtcNow.AddMinutes(10);;
         }
-        
+
         public IEnumerable<PlantsActionDto> GetScheduledForUser(int userId)
         {
-            var user = _dbContext.Users.Include(x=>x.PlantsAudits)
-                .ThenInclude(x=>x.Plant)
-                .ThenInclude(y=>y.PlantInfo)
+            var user = _dbContext.Users.Include(x => x.PlantsAudits)
+                .ThenInclude(x => x.Plant)
+                .ThenInclude(y => y.PlantInfo)
                 .FirstOrDefault(x => x.Id == userId);
-            return user.PlantsAudits.Where(x => !x.IsDone).Select(x => x.ToDto());
+            return user.PlantsAudits.Where(x => !x.IsDone).OrderBy(x => x.ScheduledDate).Select(x => x.ToDto());
         }
 
         public void Invoke(int auditId)
         {
             _dbContext.PlantsAudit
-                .FirstOrDefault(x => x.Id == auditId).
-                IsDone = true;
+                .FirstOrDefault(x => x.Id == auditId).IsDone = true;
             _dbContext.SaveChanges();
         }
 
@@ -110,6 +132,22 @@ namespace BusinessLogic
             _dbContext.SaveChanges();
         }
 
+        public void UpdateDate(PlantsActionDto dto)
+        {
+            var audit = _dbContext.PlantsAudit
+                .FirstOrDefault(x => x.Id == dto.Id);
+            audit.ScheduledDate = dto.ScheduledDate;
+            _dbContext.SaveChanges();
+        }
+
+        public void MarkAsDone(PlantsActionDto dto)
+        {
+            var audit = _dbContext.PlantsAudit
+                .FirstOrDefault(x => x.Id == dto.Id);
+            audit.ExecutionDate = dto.ExecutionDate;
+            audit.IsDone = true;
+            _dbContext.SaveChanges();
+        }
 
         private DateTime GetScheduledDateTime()
         {
