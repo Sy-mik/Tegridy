@@ -6,14 +6,17 @@ import {
   Image,
   TouchableHighlight,
 } from "react-native";
+import { webApiUri } from "../../services/apiCalls";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import Colors from "./../../constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function ScheduledItemCard(item) {
-  const navigation = useNavigation();
-  item = item.children;
+export default function ScheduledItemCard({item, onClick}) {
+  const imageUri = item.imageName
+    ? webApiUri + "images/" + item.imageName
+    : item.imageUri;
+
   let weekday = [
     "Sunday",
     "Monday",
@@ -31,7 +34,7 @@ export default function ScheduledItemCard(item) {
     <TouchableOpacity
       activeOpacity={0.7}
       style={{ width: 160, height: 150, marginLeft: 30 }}
-      onPress={() => navigation.push("Scheduled", { item })}
+      onPress={() => onClick(item) }
     >
       <View
         style={{
@@ -39,14 +42,20 @@ export default function ScheduledItemCard(item) {
           height: 150,
         }}
       >
-        
-        <Image style={styles.cardImage} source={{ uri: item.imageUri }} />
+        <Image
+          style={styles.cardImage}
+          source={{
+            uri: item.imageName
+              ? webApiUri + "images/" + item.imageName
+              : item.imageUri,
+          }}
+        />
         <View>
           <Feather
             style={{
               position: "absolute",
-              bottom:5,
-              color:'white',
+              bottom: 5,
+              color: "white",
               marginLeft: 5,
               marginRight: "auto",
             }}
@@ -84,8 +93,6 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     borderRadius: 10,
-    // position: "absolute",
-    // flex: 1,
     width: 160,
     height: 100,
   },

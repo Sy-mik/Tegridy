@@ -8,9 +8,9 @@ export default function ({ label, callback, value, keyboardType }) {
       <View
         style={{
           backgroundColor: value,
-          borderBottomColor: "#000000",
+          borderBottomColor: "grey",
           borderBottomWidth: 1,
-          width:'100%'
+          width: "100%",
         }}
       >
         <TextInput
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   },
   textInputField: {
     height: 40,
-    width:'100%',
+    width: "100%",
     borderColor: "white",
     fontSize: 20,
     padding: 5,

@@ -1,23 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  FlatList,
-  StyleSheet,
-  Button,
-  Text,
-  View,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import Colors from "../../constants/Colors";
-import PlantTypeItem from "../addPlantForm/PlantTypeItem";
 import { GetTypes } from "../../services/apiCalls";
 import ConfirmButton from "../../components/ConfirmButton";
+import PlantTypeList from "../addPlantForm/PlantTypeList";
 
 export default function () {
   const navigation = useNavigation();
 
   const [selected, setSelected] = React.useState(-1);
-  const [selectedName, setSelectedName] = React.useState("");
   const [list, setList] = useState([]);
 
   useEffect(() => {
@@ -31,30 +22,13 @@ export default function () {
     fetchData();
   }, []);
 
-  function onSelectItem(id, name) {
-    setSelected(id);
-    setSelectedName(name);
-  }
-
   return (
     <View style={styles.mainContainer}>
       <View style={{ marginLeft: 20, marginRight: 20 }}>
         <Text style={{ fontSize: 30, fontWeight: "600", marginTop: 5 }}>
           Pick Existing
         </Text>
-        <FlatList
-          data={list}
-          renderItem={({ item }) => (
-            <PlantTypeItem
-              id={item.id}
-              title={item.name}
-              selected={selected == item.id}
-              onSelectItem={onSelectItem}
-            />
-          )}
-          keyExtractor={(item) => item.id}
-          extraData={selected}
-        />
+        <PlantTypeList list={list} onSelectItem={setSelected}></PlantTypeList>
       </View>
       <ConfirmButton
         text="Next"

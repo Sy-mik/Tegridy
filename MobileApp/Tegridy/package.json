@@ -16,11 +16,15 @@
     "@react-navigation/stack": "^5.2.9",
     "axios": "^0.19.2",
     "expo": "~37.0.3",
+    "expo-image-picker": "~8.1.0",
+    "expo-permissions": "~8.1.0",
     "moment": "^2.24.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
     "react-moment": "^0.9.7",
     "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.0.tar.gz",
+    "react-native-calendars": "^1.265.0",
+    "react-native-dialog": "^5.6.0",
     "react-native-elements": "^1.2.7",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-image-picker": "^2.3.1",
@@ -31,7 +35,8 @@
     "react-navigation": "^4.3.7",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "expo-splash-screen": "~0.1.1"
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",

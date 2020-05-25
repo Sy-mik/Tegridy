@@ -1,0 +1,119 @@
+import React, { Component, useState, useEffect } from "react";
+
+import {
+  FlatList,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
+import { DefaultButton } from "../../components/DefaultButton";
+import { Text,View, StyleSheet } from "react-native";
+
+
+export default function DaysOfWeek({ selectedDays, setSelectedDays }) {
+  function IsFlagSet(value, flag) {
+    return (value & flag) != 0;
+  }
+
+  var Days = {
+    None: 0,
+    Monday: 1,
+    Tuesday: 2,
+    Wednesday: 4,
+    Thursday: 8,
+    Friday: 16,
+    Saturday: 32,
+    Sunday: 64,
+  };
+
+  let daysOfWeek = [
+    { name: "M", value: Days.Monday },
+    { name: "T", value: Days.Tuesday },
+    { name: "W", value: Days.Wednesday },
+    { name: "T", value: Days.Thursday },
+    { name: "F", value: Days.Friday },
+    { name: "S", value: Days.Saturday },
+    { name: "S", value: Days.Sunday },
+    { name: "cancelButton" },
+  ];
+
+  function getIsSelected(value) {
+    if (selectedDays == 0) {
+      return false;
+    } else if (IsFlagSet(selectedDays, value)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  function DayOfWeekCircle({ name, isSelected, onSelect }) {
+    return (
+      <View>
+        {name == "cancelButton" ? (
+          <DefaultButton 
+          onPress={() => setSelectedDays(Days.None)}
+          text="Cancel"></DefaultButton>
+        ) : (
+          <TouchableWithoutFeedback
+            onPress={() => onSelect()}
+            style={{
+              ...styles.dayOfWeekContainer,
+              backgroundColor: isSelected ? "black" : "white",
+            }}
+          >
+            <Text
+              style={{
+                alignSelf: "center",
+                fontSize: 25,
+                color: isSelected ? "white" : "black",
+              }}
+            >
+              {name}
+            </Text>
+          </TouchableWithoutFeedback>
+        )}
+      </View>
+    );
+  }
+
+  return selectedDays > 1 ? (
+    <FlatList
+    style={{height:106}}
+      data={daysOfWeek}
+      numColumns={5}
+      showsHorizontalScrollIndicator={false}
+      keyExtractor={(item, index) => item + index}
+      renderItem={({ item }) => (
+        <DayOfWeekCircle
+          onSelect={() => {
+            if (IsFlagSet(selectedDays, item.value)) {
+              let flag = selectedDays & ~item.value;
+              setSelectedDays(flag);
+            } else {
+              setSelectedDays(selectedDays | item.value);
+            }
+          }}
+          isSelected={getIsSelected(item.value)}
+          name={item.name}
+        ></DayOfWeekCircle>
+      )}
+    ></FlatList>
+  ) : (
+    <DefaultButton
+      text={"Days"}
+      onPress={() => setSelectedDays(127)}
+    ></DefaultButton>
+  );
+}
+
+const styles = StyleSheet.create({
+  dayOfWeekContainer: {
+    margin: 5,
+    width: 40,
+    height: 40,
+
+    backgroundColor: "black",
+    borderRadius: 100,
+    alignContent: "center",
+    justifyContent: "center",
+  },
+});

@@ -4,107 +4,98 @@ import { View, Text, Image, StyleSheet, FlatList } from "react-native";
 import TextInputForm from "../../components/TextInputForm";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { AntDesign } from "@expo/vector-icons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+
 import {
   TouchableHighlight,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native-gesture-handler";
+import ScheduleWateringModal from "./ScheduleWateringModal";
 export default function ScheduledActionForm({
-  selectedAction,
-  setSelectedAction,
+  plantId,
   scheduledDate,
-  setScheduledDate,
   amountOfWaterMilliliters,
-  setAmountOfWaterMilliliters,
+  disabled,
 }) {
-  const [collapsed, setCollapsed] = useState(true);
+  console.log("plantId");
+  console.log(plantId);
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setScheduledDate(currentDate);
-  };
-
-  const data = [
-    {
-      id: 1,
-      title: "Watering",
-    },
-    {
-      id: 2,
-      title: "Soil measurment",
-    },
-    {
-      id: 3,
-      title: "Replanting",
-    },
-  ];
-
-  function ActionType({ item, selected }) {
-    return (
-      <TouchableWithoutFeedback
-        onPress={() => setSelectedAction(item.id)}
-        style={{
-          borderColor: "black",
-          backgroundColor: selected ? "black" : "white",
-          borderWidth: 1,
-          padding: 10,
-          margin: 5,
-          borderRadius: 20,
-        }}
-      >
-        <Text
-          style={{
-            color: selected ? "white" : "black",
-          }}
-        >
-          {item.title}
-        </Text>
-      </TouchableWithoutFeedback>
-    );
-  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
-    <View style={{ margin: 10, width: "100%" }}>
-      <Text
-        onPress={() => setCollapsed(!collapsed)}
-        style={{ fontSize: 30, fontWeight: "600" }}
+    <View>
+      <ScheduleWateringModal
+        plantId={plantId}
+        isOpen={isModalOpen}
+        toggle={setIsModalOpen}
+        amountOfWaterMilliliters={amountOfWaterMilliliters}
+        scheduledDate={scheduledDate}
+      ></ScheduleWateringModal>
+
+      <View style={{ margin: 10, width: "100%" }}>
+        <Text style={{ fontSize: 30, fontWeight: "600" }}>Choose action</Text>
+      </View>
+      
+      <TouchableOpacity
+        onPress={() => {
+          if (!disabled) {
+            setIsModalOpen(true);
+          } else {
+            alert("Choose plant");
+          }
+        }}
+        style={{ ...styles.openButton, alignSelf: "center" }}
       >
-        Schedule action
-      </Text>
-      <FlatList
-        horizontal={true}
-        data={data}
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (
-          <ActionType
-            item={item}
-            selected={selectedAction == item.id}
-          ></ActionType>
-        )}
-      ></FlatList>
-      {selectedAction == 1 ? (
-        <View style={{ flexDirection: "column", flex: 1 }}>
-          <TextInputForm
-            style={{ flex: 1 }}
-            label="Water in mililiters"
-            callback={(value) => {
-              setAmountOfWaterMilliliters(value);
-            }}
-            value={amountOfWaterMilliliters.toString()}
-          ></TextInputForm>
-          <DateTimePicker
-            testID="dateTimePicker"
-            timeZoneOffsetInMinutes={0}
-            value={scheduledDate}
-            mode={"datetime"}
-            is24Hour={true}
-            display="default"
-            onChange={onChange}
-          />
+        <View style={{ alignContent: "center", flexDirection: "row" }}>
+          <Text style={{ ...styles.textStyle, flex: 1, color: "black" }}>
+            Watering
+          </Text>
+          <View>
+            <MaterialCommunityIcons name="water" size={24} color="black" />
+          </View>
         </View>
-      ) : null}
+      </TouchableOpacity>
     </View>
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  centeredView: {
+    alignItems: "center",
+  },
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    width: "100%",
+
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  openButton: {
+    backgroundColor: "#F5F5F5",
+    width: 300,
+    margin: 5,
+    padding: 10,
+    borderRadius: 30,
+  },
+  textStyle: {
+    color: "black",
+    // fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 20,
+  },
+  modalText: {
+    fontSize: 30,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+});

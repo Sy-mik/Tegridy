@@ -1,133 +1,208 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Image, StyleSheet, Button } from "react-native";
-import { InvokeAction } from "../../services/apiCalls";
-import { RemoveScheduled } from "../../services/apiCalls";
+import React, { Component, useState, useEffect } from "react";
+import {
+  Alert,
+  Modal,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import DatePicker from "../../components/DatePicker";
+import {
+  UpdatePlantActionDate,
+  UpdatePlantActionStatus,
+  RemoveScheduled,
+} from "../../services/apiCalls";
 import FetchScheduled from "../../store/FetchScheduled";
 import { useDispatch } from "react-redux";
-import { Feather } from "@expo/vector-icons";
-import ConfirmButton from "../../components/ConfirmButton";
 
-export default function ScheduledItemModal({ route, navigation }) {
-  const { item } = route.params;
-  const imageUri = item.imageUri;
-  const itemName = item.name;
-  const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+export default function ScheduledItemModal({ item, isOpen, toggle }) {
+  let name = "";
+  let dispatch = useDispatch();
+  const [date, setDate] = useState(new Date());
+  const [isDatePickerOpen, setIsDatePickerOpen] = useState(false);
+  const [visibleDate, setVisibleDate] = useState("");
+  let newItem = item;
 
-  let weekday = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  let date = new Date(item.scheduledDate);
-  let convertedDate =
-    weekday[date.getDay()] + " " + date.getHours() + ":" + date.getMinutes();
+  useEffect(() => {
+    if (item) {
+      newItem = item;
+      name = item.name;
+      let d = new Date(item.scheduledDate);
+      setDate(d);
+      setVisibleDate(d.toDateString() + " " + d.toLocaleTimeString());
+    }
+  }, [item]);
 
-  React.useLayoutEffect(() => {
-    navigation.setOptions({
-      headerRight: () => (
-        <Text
-          onPress={() => RemoveItem(item.id)}
-          style={{ margin: 10, fontSize: 18, fontWeight: "500" }}
-        >
-          Remove
-        </Text>
-      ),
-    });
-  }, []);
+  useEffect(() => {
+    let d = date;
+    setVisibleDate(d.toDateString() + " " + d.toLocaleTimeString());
+  }, [date]);
 
-  function RemoveItem(auditId) {
-    RemoveScheduled(auditId).then((res) => {
+  function openDatePicker() {
+    toggle(false);
+    setIsDatePickerOpen(true);
+  }
+
+  function saveDate() {
+    toggle(true);
+    setIsDatePickerOpen(false);
+    UpdatePlantActionDate(item.id, date).then(() => {
       FetchScheduled(dispatch);
-      navigation.goBack();
     });
   }
+  function MarkAsDone() {
+    UpdatePlantActionStatus(item.id).then(() => {
+      FetchScheduled(dispatch);
+      toggle(false);
+    });
+  }
+
+  function RemoveItem() {
+    RemoveScheduled(item.id).then(() => {
+      FetchScheduled(dispatch);
+      toggle(false);
+    });
+  }
+
   return (
-    <View
-      style={{
-        flex: 1,
-        flexDirection: "column",
-        justifyContent: "space-between",
-      }}
-    >
-      <View style={styles.container}>
-        <Image
-          style={styles.modalImage}
-          resizeMode="cover"
-          source={{ uri: imageUri }}
-        ></Image>
-        <View style={styles.informationsContainer}>
-          <View
-            style={{
-              flex: 1,
-              flexDirection: "row",
-              alignContent: "space-between",
+    <View style={{ ...styles.centeredView }}>
+      <DatePicker
+        date={date}
+        onSetDate={setDate}
+        onCancel={() => {
+          toggle(true);
+          setIsDatePickerOpen(false);
+        }}
+        onSave={saveDate}
+        isOpen={isDatePickerOpen}
+      ></DatePicker>
+
+      <Modal
+        animationType="slide"
+        hardwareAccelerated={true}
+        transparent={true}
+        visible={isOpen}
+      >
+        <View style={styles.centeredView}>
+          <TouchableHighlight
+            style={{ width: "100%" }}
+            onPress={() => {
+              toggle(false);
             }}
           >
-            <Text style={styles.title}>{itemName}</Text>
-            <View
-              style={{
-                flex: 1,
-                alignItems: "flex-end",
-                alignContent: "flex-end",
+            <View style={{ height: "100%" }}></View>
+          </TouchableHighlight>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              {newItem ? newItem.name : null}
+            </Text>
+
+            <TouchableHighlight
+              onPress={() => {
+                // toggle(false);
               }}
+              style={{ ...styles.openButton }}
             >
-              <Feather
-                size={20}
-                // color="white"
-                name="cloud-drizzle"
-              />
-            </View>
-          </View>
-          <View style={{ flex: 5 }}>
-            <Text style={{ fontSize: 16 }}>{convertedDate}</Text>
+              <Text style={{ ...styles.textStyle, color: "black" }}>
+                Water: 100ml
+              </Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={() => {
+                openDatePicker();
+              }}
+              style={{ ...styles.openButton }}
+            >
+              <Text style={{ ...styles.textStyle, color: "black" }}>
+                {visibleDate}
+              </Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={() => {
+                RemoveItem();
+              }}
+              style={{ ...styles.openButton }}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text style={{ ...styles.textStyle, flex: 1, color: "red" }}>
+                  Remove
+                </Text>
+                <FontAwesome5 name="trash-alt" size={20} color="red" />
+              </View>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={() => MarkAsDone()}
+              style={{ ...styles.openButton }}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text style={{ ...styles.textStyle, flex: 1 }}>
+                  Mark as done
+                </Text>
+                <FontAwesome5 name="check" size={20} color="black" />
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "black" }}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text style={{ ...styles.textStyle, color: "white", flex: 1 }}>
+                  Run
+                </Text>
+                <FontAwesome5 name="check" size={20} color="white" />
+              </View>
+            </TouchableHighlight>
           </View>
         </View>
-      </View>
-
-      <ConfirmButton
-        loading={loading}
-        text={"Confirm"}
-        onPress={() => {
-          setLoading(true);
-          InvokeAction(item.auditId);
-        }}
-      ></ConfirmButton>
+      </Modal>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  centeredView: {
     flex: 1,
-    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignItems: "center",
   },
-  modalImage: {
-    height: 300,
-  },
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    width: "100%",
 
-  informationsContainer: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "flex-start",
-    backgroundColor: "#fff",
-    borderRadius: 30,
-    marginTop: -20,
-    padding: 15,
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
-  buttons: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 20,
-  },
-  title: {
-    flex: 1,
+  openButton: {
+    backgroundColor: "#F5F5F5",
+    width: "95%",
     margin: 5,
+    borderRadius: 20,
+    padding: 10,
+  },
+  textStyle: {
+    color: "black",
+    // fontWeight: "bold",
+    textAlign: "center",
+    fontSize: 20,
+  },
+  modalText: {
     fontSize: 30,
     fontWeight: "bold",
+    marginBottom: 10,
   },
 });

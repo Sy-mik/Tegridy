@@ -6,6 +6,7 @@ import {
   AddPlantAction,
   GetScheduled,
   RemovePlant,
+  webApiUri,
 } from "../../services/apiCalls";
 import { useDispatch } from "react-redux";
 import { fetchScheduled } from "../../store/actions";
@@ -16,25 +17,29 @@ import ConfirmButton from "../../components/ConfirmButton";
 export default function Plant({ route }) {
   const { plant } = route.params;
   const dispatch = useDispatch();
+  const imageUri = plant.imageName
+    ? webApiUri + "images/" + plant.imageName
+    : plant.imageUri;
 
-  const imageUri = plant.imageUri;
   const itemName = plant.name;
   const navigation = useNavigation();
 
   const [loading, setLoading] = React.useState(false);
-  const [action, setAction] = React.useState("");
+  const [action, setAction] = React.useState();
   const [scheduledDate, setScheduledDate] = React.useState(new Date());
   const [selectedAction, setSelectedAction] = React.useState(0);
   const [
     amountOfWaterMilliliters,
     setAmountOfWaterMilliliters,
-  ] = React.useState(0);
+  ] = React.useState("");
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Text
-          onPress={() => RemovePlant(plant.id).then((res) => FetchPlants())}
+          onPress={() =>
+            RemovePlant(plant.id.toString()).then((res) => FetchPlants())
+          }
           style={{ margin: 10, fontSize: 18, fontWeight: "500" }}
         >
           Remove
@@ -54,41 +59,53 @@ export default function Plant({ route }) {
   React.useLayoutEffect(() => {
     async function fetchData() {
       await GetSuggestedActionForPlant(plant.id)
-        .then((res) => res.json())
+        .then((res) => res ?? res.json())
         .then((res) => {
-          setAction(res);
-          setAmountOfWaterMilliliters(res.amountOfWaterMilliliters);
-          let date = new Date(res.scheduledDate);
-          setScheduledDate(date);
+          if (res) {
+            setAction(res);
+            if (res.amountOfWaterMilliliters) {
+              setAmountOfWaterMilliliters(res.amountOfWaterMilliliters); //
+            }
+            if (res.scheduledDate) {
+              let date = new Date(res.scheduledDate);
+              setScheduledDate(date);
+            }
+          }
         });
     }
-    fetchData();
+    try {
+      fetchData();
+    } catch (E) {
+      console.log(E);
+    }
   }, []);
 
   function ScheduleWatering() {
     setLoading(true);
-    action.scheduledDate = scheduledDate;
-    action.amountOfWaterMilliliters = amountOfWaterMilliliters;
-    // refresh Scheduled list
-    AddPlant(action);
+    let plantAction = {
+      scheduledDate: scheduledDate,
+      amountOfWaterMilliliters: new Number(amountOfWaterMilliliters),
+      plantId: plant.id,
+      userId: 1,
+    };
+    AddPlant(plantAction);
 
     async function AddPlant(action) {
-      // You can await here
       setLoading(true);
-      await AddPlantAction(action).then((res) => {
+      await AddPlantAction(action).then(() => {
         setLoading(false);
         fetchData();
       });
     }
+  }
 
-    function fetchData() {
-      GetScheduled()
-        .then((res) => res.json())
-        .then((res) => {
-          setLoading(false);
-          dispatch(fetchScheduled(res));
-        });
-    }
+  function fetchData() {
+    GetScheduled()
+      .then((res) => res.json())
+      .then((res) => {
+        setLoading(false);
+        dispatch(fetchScheduled(res));
+      });
   }
   return (
     <View
@@ -111,19 +128,12 @@ export default function Plant({ route }) {
           </View>
         </View>
 
-        <View style={styles.buttons}>
-          <ScheduledActionForm
-            selectedAction={selectedAction}
-            setSelectedAction={setSelectedAction}
-            scheduledDate={scheduledDate}
-            setScheduledDate={(value) => setScheduledDate(value)}
-            amountOfWaterMilliliters={amountOfWaterMilliliters}
-            setAmountOfWaterMilliliters={(value) => {
-              setAmountOfWaterMilliliters(value);
-            }}
-            action={action}
-          ></ScheduledActionForm>
-        </View>
+        <ScheduledActionForm
+          plantId={plant.id}
+          selectedAction={selectedAction}
+          scheduledDate={scheduledDate}
+          amountOfWaterMilliliters={amountOfWaterMilliliters}
+        ></ScheduledActionForm>
       </ScrollView>
       {selectedAction != 0 ? (
         <ConfirmButton
@@ -137,7 +147,6 @@ export default function Plant({ route }) {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
