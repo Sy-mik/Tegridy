@@ -14,13 +14,13 @@ namespace Model
     public enum Days
     {
         NONE= 0,
-        MONDAY= 1,
-        TUESDAY= 2,
-        WEDNESDAY= 4,
-        THURSDAY = 8,
-        FRIDAY = 16,
-        SATURDAY = 32,
-        SUNDAY = 64
+        SUNDAY = 1,
+        MONDAY= 2,
+        TUESDAY= 4,
+        WEDNESDAY= 8,
+        THURSDAY = 16,
+        FRIDAY = 32,
+        SATURDAY = 64,
     }
     
 }

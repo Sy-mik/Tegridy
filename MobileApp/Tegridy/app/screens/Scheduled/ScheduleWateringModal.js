@@ -30,7 +30,6 @@ export default function ScheduleWateringModal({
   const [visibleDate, setVisibleDate] = useState("");
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [waterInMililiters, setWaterInMilililiter] = useState(11);
-  const [toggleWeekdays, setToggleWeekDays] = useState(false);
   const [selectedDays, setSelectedDays] = useState(0);
 
   useEffect(() => {

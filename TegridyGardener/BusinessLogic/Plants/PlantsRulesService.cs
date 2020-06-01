@@ -15,13 +15,13 @@ namespace BusinessLogic
             _dbContext = dbContext;
         }
 
-        public IEnumerable<PlantRule> GetUserRules(int userId)
+        public IEnumerable<PlantRuleDto> GetUserRules(int userId)
         {
             var rules = _dbContext.Users
                 .Include(x => x.PlantsGroups)
                 .ThenInclude(x => x.Plants).ThenInclude(x => x.Rule)
                 .FirstOrDefault(x => x.Id == userId).PlantsGroups.SelectMany(y => y.Plants.Select(
-                    z => new PlantRule()
+                    z => new PlantRuleDto()
                     {
                         Days = z.Rule.Days,
                         PlantId = z.Id,

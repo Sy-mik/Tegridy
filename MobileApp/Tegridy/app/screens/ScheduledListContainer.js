@@ -6,25 +6,33 @@ import {
   Text,
   SafeAreaView,
   RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import ScheduledItemCard from "./Scheduled/ScheduledItemCard";
 import { ScrollView } from "react-native-gesture-handler";
 import { GetScheduled } from "../services/apiCalls";
-import { fetchScheduled } from "../store/actions";
+import {
+  fetchScheduled,
+  updateMarkedDates,
+  pushScheduledFromRules,
+} from "../store/actions";
 import { useDispatch, useSelector } from "react-redux";
 import FetchScheduled from "../store/FetchScheduled";
 import ScheduledItemModal from "./Scheduled/ScheduledItemModal";
 import DatePicker from "../components/DatePicker";
 import FetchRules from "../store/FetchRules";
 import ScheduledItemsCalendar from "../components/ScheduledItemsCalendar";
+import { useModalState } from "../hooks/useModalState";
 
 export default function ScheduledList({ navigation }) {
   const dispatch = useDispatch();
   const [listIndex, setListIndex] = useState(0);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useModalState(false);
   const [dayOfTheAction, setDayOfTheAction] = useState("");
   const [monthOfTheAction, setMonthOfTheAction] = useState("");
-  const [list, setList] = useState([]);
+  const [isAddingNewDataToScheduled, setIsAddingNewDataToScheduled] = useState(
+    false
+  );
   const [selectedModalItem, setSelectedModalItem] = useState();
   const dataReducer = useSelector((state) => state.scheduledDataReducer);
   const { data } = dataReducer;
@@ -49,7 +57,8 @@ export default function ScheduledList({ navigation }) {
 
   useEffect(() => {
     calculateDayOfTheAction();
-  }, [data]);
+    setIsAddingNewDataToScheduled(false);
+  }, [dataReducer]);
 
   function calculateDayOfTheAction() {
     let item = data[listIndex];
@@ -84,6 +93,27 @@ export default function ScheduledList({ navigation }) {
     return date;
   }
 
+  function dismissModal() {
+    console.log('dismissng');
+    setIsModalOpen(false);
+  }
+
+  function onScrollScheduledItems(e) {
+    let offset = e.nativeEvent.contentOffset.x;
+    let index = parseInt(offset / 190); // cell height
+
+    if (!isAddingNewDataToScheduled && data.length - index < 3) {
+      setIsAddingNewDataToScheduled(true);
+
+      if (data) {
+        let lastItem = data[data.length - 1];
+        dispatch(pushScheduledFromRules(lastItem.scheduledDate));
+      }
+    }
+    setListIndex(index);
+    calculateDayOfTheAction();
+  }
+
   function openModal(item) {
     setIsModalOpen(true);
     setSelectedModalItem(item);
@@ -105,10 +135,7 @@ export default function ScheduledList({ navigation }) {
         <Text style={styles.header1}>{dayOfTheAction}</Text>
         <FlatList
           onScroll={(e) => {
-            let offset = e.nativeEvent.contentOffset.x;
-            let index = parseInt(offset / 190); // your cell height
-            setListIndex(index);
-            calculateDayOfTheAction();
+            onScrollScheduledItems(e);
           }}
           horizontal={true}
           data={data}
@@ -125,8 +152,10 @@ export default function ScheduledList({ navigation }) {
       <View style={{ height: 100 }}>
         <ScheduledItemModal
           isOpen={isModalOpen}
-          toggle={setIsModalOpen}
+          toggle={dismissModal}
           item={selectedModalItem}
+          onDismiss={dismissModal}
+
         ></ScheduledItemModal>
       </View>
     </SafeAreaView>

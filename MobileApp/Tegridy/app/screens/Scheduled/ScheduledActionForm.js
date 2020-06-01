@@ -18,9 +18,6 @@ export default function ScheduledActionForm({
   amountOfWaterMilliliters,
   disabled,
 }) {
-  console.log("plantId");
-  console.log(plantId);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
@@ -36,7 +33,7 @@ export default function ScheduledActionForm({
       <View style={{ margin: 10, width: "100%" }}>
         <Text style={{ fontSize: 30, fontWeight: "600" }}>Choose action</Text>
       </View>
-      
+
       <TouchableOpacity
         onPress={() => {
           if (!disabled) {

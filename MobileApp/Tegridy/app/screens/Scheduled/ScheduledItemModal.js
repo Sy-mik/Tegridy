@@ -19,7 +19,12 @@ import {
 import FetchScheduled from "../../store/FetchScheduled";
 import { useDispatch } from "react-redux";
 
-export default function ScheduledItemModal({ item, isOpen, toggle }) {
+export default function ScheduledItemModal({
+  item,
+  isOpen,
+  toggle,
+  onDismiss,
+}) {
   let name = "";
   let dispatch = useDispatch();
   const [date, setDate] = useState(new Date());
@@ -82,10 +87,17 @@ export default function ScheduledItemModal({ item, isOpen, toggle }) {
       ></DatePicker>
 
       <Modal
-        animationType="slide"
-        hardwareAccelerated={true}
         transparent={true}
+        // presentationStyle="pageSheet"
         visible={isOpen}
+        onDismiss={() => {
+          console.log("closin1");
+          onDismiss();
+        }} //
+        onRequestClose={() => {
+          console.log("closin2");
+          onDismiss();
+        }}
       >
         <View style={styles.centeredView}>
           <TouchableHighlight

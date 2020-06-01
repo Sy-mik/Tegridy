@@ -10,8 +10,6 @@ namespace Model.Dto
         
         public int UserId { get; set; }
         
-        public int PlantGroupId { get; set; }
-        
         public string Name { get; set; }
         
         public int AmountOfWaterMilliliters { get; set; }

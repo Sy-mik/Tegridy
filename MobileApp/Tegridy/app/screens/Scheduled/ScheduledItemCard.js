@@ -1,18 +1,11 @@
 import * as React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Image,
-  TouchableHighlight,
-} from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import { webApiUri } from "../../services/apiCalls";
-import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import Colors from "./../../constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-export default function ScheduledItemCard({item, onClick}) {
+export default function ScheduledItemCard({ item, onClick }) {
   const imageUri = item.imageName
     ? webApiUri + "images/" + item.imageName
     : item.imageUri;
@@ -34,7 +27,7 @@ export default function ScheduledItemCard({item, onClick}) {
     <TouchableOpacity
       activeOpacity={0.7}
       style={{ width: 160, height: 150, marginLeft: 30 }}
-      onPress={() => onClick(item) }
+      onPress={() => onClick(item)}
     >
       <View
         style={{

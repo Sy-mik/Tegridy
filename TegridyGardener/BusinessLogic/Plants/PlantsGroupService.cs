@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using BusinessLogic.Mapping;
 using Microsoft.EntityFrameworkCore;
 using Model;
 using Model.Dto;
@@ -34,11 +35,13 @@ namespace BusinessLogic
         }
         
 
-        public IEnumerable<Plant> GetUserPlants(int userId)
+        public IEnumerable<PlantDto> GetUserPlants(int userId)
         {
             var plants = _dbContext.Users.Include(x=>x.PlantsGroups)
                 .ThenInclude(x=>x.Plants)
+                .ThenInclude(x=>x.Rule)
                 .SelectMany(x=>x.PlantsGroups.SelectMany(y=>y.Plants))
+                .Select(x=>x.ToDto())
                 .ToList();
             return plants;
         }

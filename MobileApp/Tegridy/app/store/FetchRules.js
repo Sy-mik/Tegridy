@@ -1,5 +1,9 @@
 import React from "react";
-import { fetchRules, importScheduledFromRules, updateMarkedDates } from "./actions";
+import {
+  fetchRules,
+  importScheduledFromRules,
+  updateMarkedDates,
+} from "./actions";
 import { GetRules } from "../services/apiCalls";
 
 export default function FetchRules(dispatch) {
@@ -8,8 +12,8 @@ export default function FetchRules(dispatch) {
       .then((res) => res.json())
       .then((res) => {
         dispatch(fetchRules(res));
-        dispatch(updateMarkedDates(new Date()))
+        dispatch(updateMarkedDates(new Date()));
       });
   }
- return fetchData();
+  return fetchData();
 }

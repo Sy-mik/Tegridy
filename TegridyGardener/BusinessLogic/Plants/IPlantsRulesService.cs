@@ -5,6 +5,6 @@ namespace BusinessLogic
 {
     public interface IPlantsRulesService
     {
-        IEnumerable<PlantRule> GetUserRules(int userId);
+        IEnumerable<PlantRuleDto> GetUserRules(int userId);
     }
 }

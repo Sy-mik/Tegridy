@@ -5,31 +5,12 @@ import { GetRules } from "../services/apiCalls";
 import ScheduleAction from "../screens/Scheduled/ScheduleAction";
 import { View } from "react-native";
 import FetchRules from "../store/FetchRules";
+import { updateMarkedDates } from "../store/actions";
+import { useModalState } from "../hooks/useModalState";
 
-export const useModalState = (initialState) => {
-  const [modalVisible, setModalVisible] = React.useState(initialState);
-  const [forceModalVisible, setForceModalVisible] = React.useState(false);
-
-  const setModal = (modalState) => {
-    if (modalState && modalVisible) {
-      setForceModalVisible(true);
-    }
-    setModalVisible(modalState);
-  };
-
-  useEffect(() => {
-    if (forceModalVisible && modalVisible) {
-      setModalVisible(false);
-    }
-    if (forceModalVisible && !modalVisible) {
-      setForceModalVisible(false);
-      setModalVisible(true);
-    }
-  }, [forceModalVisible, modalVisible]);
-
-  return [modalVisible, setModal];
-};
 export default function ScheduledItemsCalendar() {
+  let dispatch = useDispatch();
+
   const [modalVisible, setModalVisible] = useModalState(false);
   const [pickedDate, setPickedDate] = React.useState(new Date());
 
@@ -60,11 +41,9 @@ export default function ScheduledItemsCalendar() {
           // Month format in calendar title. Formatting values: http://arshaw.com/xdate/#Formatting
           monthFormat={"yyyy MMMM"}
           // Handler which gets executed when visible month changes in calendar. Default = undefined
-          onMonthChange={(month) => {
-            // let d = new Date(date);
-            // d.setMonth(month);
-            // setDate(d);
-            // console.log("month changed", month);
+          onMonthChange={(date) => {
+            let d = new Date(date.dateString);
+            dispatch(updateMarkedDates(d));
           }}
           markedDates={{
             // '2020-05-16': {selected: true, marked: true, selectedColor: 'blue'},

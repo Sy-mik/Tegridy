@@ -5,23 +5,23 @@ import {
   TouchableWithoutFeedback,
 } from "react-native-gesture-handler";
 import { DefaultButton } from "../../components/DefaultButton";
-import { Text,View, StyleSheet } from "react-native";
-
+import { Text, View, StyleSheet } from "react-native";
 
 export default function DaysOfWeek({ selectedDays, setSelectedDays }) {
+  
   function IsFlagSet(value, flag) {
     return (value & flag) != 0;
   }
 
   var Days = {
     None: 0,
-    Monday: 1,
-    Tuesday: 2,
-    Wednesday: 4,
-    Thursday: 8,
-    Friday: 16,
-    Saturday: 32,
-    Sunday: 64,
+    Sunday: 1,
+    Monday: 2,
+    Tuesday: 4,
+    Wednesday: 8,
+    Thursday: 16,
+    Friday: 32,
+    Saturday: 64,
   };
 
   let daysOfWeek = [
@@ -49,9 +49,10 @@ export default function DaysOfWeek({ selectedDays, setSelectedDays }) {
     return (
       <View>
         {name == "cancelButton" ? (
-          <DefaultButton 
-          onPress={() => setSelectedDays(Days.None)}
-          text="Cancel"></DefaultButton>
+          <DefaultButton
+            onPress={() => setSelectedDays(Days.None)}
+            text="Cancel"
+          ></DefaultButton>
         ) : (
           <TouchableWithoutFeedback
             onPress={() => onSelect()}
@@ -77,7 +78,7 @@ export default function DaysOfWeek({ selectedDays, setSelectedDays }) {
 
   return selectedDays > 1 ? (
     <FlatList
-    style={{height:106}}
+      style={{ height: 106 }}
       data={daysOfWeek}
       numColumns={5}
       showsHorizontalScrollIndicator={false}
@@ -88,8 +89,12 @@ export default function DaysOfWeek({ selectedDays, setSelectedDays }) {
             if (IsFlagSet(selectedDays, item.value)) {
               let flag = selectedDays & ~item.value;
               setSelectedDays(flag);
+              console.log('selected days');
+              console.log(flag);
             } else {
               setSelectedDays(selectedDays | item.value);
+              console.log('selected days');
+              console.log(selectedDays);
             }
           }}
           isSelected={getIsSelected(item.value)}

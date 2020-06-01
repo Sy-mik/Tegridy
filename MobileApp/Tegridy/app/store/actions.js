@@ -7,9 +7,14 @@ export const FETCH_PLANTS = "FETCH_PLANTS";
 
 export const FETCH_RULES = "FETCH_RULES";
 
-export const IMPORT_SCHEDULED_FROM_RULES = "IMPORT_SCHEDULED_FROM_RULES";
+export const PUSH_SCHEDULED_FROM_RULES = "PUSH_SCHEDULED_FROM_RULES";
 
 export const UPDATE_MARKED_DATES = "UPDATE_MARKED_DATES";
+
+export const SET_IS_LOADING_TRUE = "SET_IS_LOADING_TRUE";
+
+export const SET_IS_LOADING_FALSE = "SET_IS_LOADING_FALSE";
+
 export const fetchScheduled = (data) => ({
   type: FETCH_SCHEDULED,
   data,
@@ -25,12 +30,21 @@ export const fetchRules = (data) => ({
   data,
 });
 
-export const importScheduledFromRules = (month) => ({
-  type: IMPORT_SCHEDULED_FROM_RULES,
-  month,
+export const pushScheduledFromRules = (date) => ({
+  type: PUSH_SCHEDULED_FROM_RULES,
+  date,
 });
 
-export const updateMarkedDates = (month) => ({
+export const updateMarkedDates = (date) => ({
   type: UPDATE_MARKED_DATES,
-  month,
+  date,
+});
+
+export const setIsLoadingTrue = () => ({
+  type: SET_IS_LOADING_TRUE,
+});
+
+
+export const setIsLoadingFalse = () => ({
+  type: SET_IS_LOADING_FALSE,
 });

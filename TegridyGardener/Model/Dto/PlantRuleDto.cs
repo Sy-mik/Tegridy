@@ -2,7 +2,7 @@ using System;
 
 namespace Model.Dto
 {
-    public class PlantRule
+    public class PlantRuleDto
     {
         public int Id { get; set; }
         
