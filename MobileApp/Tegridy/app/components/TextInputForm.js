@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { TextInput, Text, View, StyleSheet } from "react-native";
 
-export default function ({ label, callback, value, keyboardType }) {
+export default function ({ label, value, keyboardType }) {
   return (
     <View style={styles.inputContainer}>
       <Text style={styles.inputLabel}>{label}</Text>
       <View
         style={{
-          backgroundColor: value,
           borderBottomColor: "grey",
           borderBottomWidth: 1,
           width: "100%",
@@ -15,7 +14,7 @@ export default function ({ label, callback, value, keyboardType }) {
       >
         <TextInput
           style={styles.textInputField}
-          onChangeText={(text) => callback(text)}
+          onChangeText={(text) => setValue(text)}
           value={value}
           keyboardType={keyboardType}
         />

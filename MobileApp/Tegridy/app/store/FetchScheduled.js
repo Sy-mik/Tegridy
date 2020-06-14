@@ -7,7 +7,6 @@ export default function FetchScheduled(dispatch) {
     await GetScheduled()
       .then((res) => res.json())
       .then((res) => {
-        console.log('fetched');
         dispatch(fetchScheduled(res));
       });
   }

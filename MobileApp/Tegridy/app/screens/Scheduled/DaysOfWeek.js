@@ -7,8 +7,12 @@ import {
 import { DefaultButton } from "../../components/DefaultButton";
 import { Text, View, StyleSheet } from "react-native";
 
-export default function DaysOfWeek({ selectedDays, setSelectedDays }) {
-  
+export default function DaysOfWeek({
+  selectedDays,
+  setSelectedDays,
+  isVisible,
+  setValuesChanged,
+}) {
   function IsFlagSet(value, flag) {
     return (value & flag) != 0;
   }
@@ -32,7 +36,6 @@ export default function DaysOfWeek({ selectedDays, setSelectedDays }) {
     { name: "F", value: Days.Friday },
     { name: "S", value: Days.Saturday },
     { name: "S", value: Days.Sunday },
-    { name: "cancelButton" },
   ];
 
   function getIsSelected(value) {
@@ -76,37 +79,28 @@ export default function DaysOfWeek({ selectedDays, setSelectedDays }) {
     );
   }
 
-  return selectedDays > 1 ? (
+  return (
     <FlatList
-      style={{ height: 106 }}
       data={daysOfWeek}
-      numColumns={5}
+      numColumns={7}
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item, index) => item + index}
       renderItem={({ item }) => (
         <DayOfWeekCircle
           onSelect={() => {
             if (IsFlagSet(selectedDays, item.value)) {
-              let flag = selectedDays & ~item.value;
+              let flag = selectedDays &~ item.value;
               setSelectedDays(flag);
-              console.log('selected days');
-              console.log(flag);
             } else {
               setSelectedDays(selectedDays | item.value);
-              console.log('selected days');
-              console.log(selectedDays);
             }
+            setValuesChanged(true);
           }}
           isSelected={getIsSelected(item.value)}
           name={item.name}
         ></DayOfWeekCircle>
       )}
     ></FlatList>
-  ) : (
-    <DefaultButton
-      text={"Days"}
-      onPress={() => setSelectedDays(127)}
-    ></DefaultButton>
   );
 }
 

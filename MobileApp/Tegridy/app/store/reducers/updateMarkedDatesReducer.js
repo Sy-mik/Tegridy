@@ -7,7 +7,6 @@ export let markedDates = {};
 export const updateMarkedDatesReducer = (state = markedDates, action) => {
   switch (action.type) {
     case UPDATE_MARKED_DATES:
-      console.log(action);
       updateMarkedDatesLogic(action.date);
       return { ...state, data: markedDates };
     default:
@@ -18,7 +17,6 @@ export const updateMarkedDatesReducer = (state = markedDates, action) => {
 function updateMarkedDatesLogic(date) {
   let obj = new Object();
   var d = new Date(date.getFullYear(), date.getMonth(), 1);
-  console.log(d);
   while (d <= new Date(date.getFullYear(), date.getMonth(), 31)) {
     let binaryDay = Math.pow(2, d.getDay());
     if (userRules && userRules.length > 0) {

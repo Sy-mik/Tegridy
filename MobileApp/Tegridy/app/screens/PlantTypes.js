@@ -10,11 +10,8 @@ import {
 
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { GetPlants, GetTypes } from "../services/apiCalls";
-import { fetchScheduled, fetchPlants } from "../store/actions";
+import { GetTypes } from "../services/apiCalls";
 
-import { useDispatch, useSelector } from "react-redux";
-import FetchPlants from "../store/FetchPlants";
 import PlantTypeList from "./addPlantForm/PlantTypeList";
 import ConfirmButton from "../components/ConfirmButton";
 

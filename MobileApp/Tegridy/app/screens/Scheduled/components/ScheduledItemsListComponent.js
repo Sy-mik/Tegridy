@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import { View, ScrollView } from "react-native";
-import ScheduledItemCard from "./ScheduledItemCard";
+import { View, ScrollView, StyleSheet, Text } from "react-native";
+import ScheduledItemCard from "../ScheduledItemCard";
+import { FlatList } from "react-native-gesture-handler";
 
-export default function ScheduledItemsComponent({
+export default function ScheduledItemsListComponent({
   monthOfTheAction,
   dayOfTheAction,
   onScrollScheduledItems,
@@ -16,13 +17,15 @@ export default function ScheduledItemsComponent({
       <Text style={styles.header1}>{dayOfTheAction}</Text>
       <FlatList
         onScroll={(e) => {
-          onScrollScheduledItems(e);
+          if (onScrollScheduledItems) {
+            onScrollScheduledItems(e);
+          }
         }}
         horizontal={true}
         data={data}
         showsHorizontalScrollIndicator={false}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (
+        renderItem={({ item }) => (//
           <ScheduledItemCard
             item={item}
             onClick={openModal}

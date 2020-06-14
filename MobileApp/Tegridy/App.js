@@ -9,7 +9,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import BottomTabNavigator from "./app/navigation/navigation";
-import ScheduledItemModal from "./app/screens/Scheduled/ScheduledItemModal";
 import AddPlantForm from "./app/screens/addPlantForm/AddPlantForm";
 import FetchPlants from "./app/store/FetchPlants";
 import FetchScheduled from "./app/store/FetchScheduled";

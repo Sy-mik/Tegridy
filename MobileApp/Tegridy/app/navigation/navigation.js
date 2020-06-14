@@ -5,12 +5,13 @@ import { Feather } from "@expo/vector-icons";
 import PlantList from "../screens/PlantList";
 import AddPlantForm from "../screens/addPlantForm/AddPlantForm";
 import { createStackNavigator } from "@react-navigation/stack";
-import ScheduledList from "../screens/ScheduledListContainer";
 import Plant from "../screens/plant/Plant";
 import ScheduledActionForm from "../screens/Scheduled/ScheduledActionForm";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import PlantTypes from "../screens/PlantTypes";
+import ScheduledListScreen from "../screens/ScheduledListScreen";
+import InputScreen from "../components/InputScreen";
 const BottomTab = createBottomTabNavigator();
 
 const HomeStack = createStackNavigator();
@@ -38,8 +39,17 @@ export default function BottomTabNavigator({ navigation, route }) {
             </TouchableOpacity>
           ),
         }}
-        component={ScheduledList}
-      ></BottomTab.Screen>
+      >
+        {() => (
+          <HomeStack.Navigator>
+            <HomeStack.Screen
+              name="Scheduled"
+              component={ScheduledListScreen}
+            />
+            <HomeStack.Screen name="Plant" component={Plant} />
+          </HomeStack.Navigator>
+        )}
+      </BottomTab.Screen>
 
       <BottomTab.Screen
         name="Links"

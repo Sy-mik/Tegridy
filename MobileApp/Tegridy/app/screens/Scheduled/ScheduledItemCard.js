@@ -27,7 +27,8 @@ export default function ScheduledItemCard({ item, onClick }) {
     <TouchableOpacity
       activeOpacity={0.7}
       style={{ width: 160, height: 150, marginLeft: 30 }}
-      onPress={() => onClick(item)}
+      onPress={() => {
+        onClick(item)}}
     >
       <View
         style={{

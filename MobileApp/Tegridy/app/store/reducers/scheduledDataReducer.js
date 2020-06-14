@@ -1,5 +1,6 @@
 import { FETCH_SCHEDULED, PUSH_SCHEDULED_FROM_RULES } from "../actions";
 import { userPlants } from "./userPlantsReducer";
+import { ScheduledItemsFactory } from "../../services/ScheduleItemFactory";
 let scheduledItems = { data: [] };
 
 export const scheduledDataReducer = (state = scheduledItems, action) => {
@@ -18,6 +19,8 @@ export const scheduledDataReducer = (state = scheduledItems, action) => {
 };
 
 function executePushScheduledFromRules(date) {
+  const itemFactory = new ScheduledItemsFactory();
+
   date = new Date(date);
   let nextRulesPeriod = new Date(date);
   nextRulesPeriod.setDate(date.getDate() + 14);
@@ -27,25 +30,18 @@ function executePushScheduledFromRules(date) {
     userPlants.forEach((element) => {
       let binaryDay = Math.pow(2, d.getDay());
       if (IsFlagSet(element.rule.days, binaryDay)) {
-        let item = createNewScheduledItem(element, d);
+        let item = itemFactory.CreateNewScheduledItem(element, d);
         scheduledItems.push(item);
       }
     });
     d.setDate(d.getDate() + 1);
   }
-}
-// TODO use typescript plz
-function createNewScheduledItem(plant, d) {
-  let scheduled = new Object();
-  scheduled.scheduledDate = new Date(d);
-  scheduled.plantId = plant.id;
-  scheduled.executionDate = null;
-  scheduled.imageUri = plant.imageUri;
-  scheduled.imageName = plant.imageName;
-  scheduled.amountOfWaterMilliliters = plant.wateringInMililiters;
-  scheduled.name = plant.name;
 
-  return scheduled;
+  scheduledItems.sort(function (a, b) {
+    var dateA = new Date(a.release),
+      dateB = new Date(b.release);
+    return dateA - dateB;
+  });
 }
 
 function IsFlagSet(value, flag) {

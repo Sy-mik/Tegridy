@@ -15,7 +15,7 @@ import FetchScheduled from "../../store/FetchScheduled";
 import { useDispatch } from "react-redux";
 import { DefaultButton } from "../../components/DefaultButton";
 import DaysOfWeek from "./DaysOfWeek";
-import InputDialog from "./InputDialog";
+import InputDialog from "../../components/InputDialog";
 
 export default function ScheduleWateringModal({
   plantId,
