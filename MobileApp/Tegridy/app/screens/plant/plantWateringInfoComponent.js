@@ -21,12 +21,6 @@ export default function PlantWateringInfoComponent({
 }) {
   return (
     <View>
-      {/* <InputDialog
-          isAlertOpen={isAlertOpen}
-          setIsAlertOpen={setIsAlertOpen}
-          setWaterInMilililiter={setWaterInMilililiter}
-        ></InputDialog> */}
-
       <View style={{ alignItems: "flex-start", margin: 15 }}>
         <Button
           onPress={() => toggleModal()}
@@ -45,10 +39,6 @@ export default function PlantWateringInfoComponent({
           setValuesChanged={setValuesChanged}
         ></DaysOfWeek>
       </View>
-      {/* <ConfirmButton
-        onPress={() => scheduleWatering()}
-        text="Save"
-      ></ConfirmButton> */}
     </View>
   );
 }

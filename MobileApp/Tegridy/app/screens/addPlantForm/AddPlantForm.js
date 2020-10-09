@@ -6,10 +6,12 @@ import { StyleSheet, Button, Image, Text, View } from "react-native";
 import Constants from "expo-constants";
 import { ScrollView } from "react-native-gesture-handler";
 import TextInputForm from "../../components/TextInputForm";
-import { AddPlant } from "../../services/apiCalls";
+import { PostPlant } from "../../services/apiCalls";
 import FetchPlants from "../../store/FetchPlants";
 import ConfirmButton from "../../components/ConfirmButton";
 import { useDispatch } from "react-redux";
+import { AddPlant } from "../../store/AddPlant";
+import { v4 as uuidv4 } from "uuid";
 
 export default function AddPlantForm({ route }) {
   const [image, setImage] = React.useState(null);
@@ -42,7 +44,7 @@ export default function AddPlantForm({ route }) {
     }
   };
 
-  async function pickImage() {
+  async function pickImageBase64() {
     try {
       let result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -51,7 +53,7 @@ export default function AddPlantForm({ route }) {
         base64: true,
       });
       if (!result.cancelled) {
-        setImage(result);// 
+        setImage(result); //
       }
     } catch (E) {
       console.log(E);
@@ -59,6 +61,7 @@ export default function AddPlantForm({ route }) {
   }
 
   async function handleCreateNewPlant() {
+    console.log('handleCreateNewPlant');
     const plant = {
       plantInfoId: selected,
       name: selectedName,
@@ -66,15 +69,18 @@ export default function AddPlantForm({ route }) {
       wateringHour: selectedHour,
       wateringMinute: selectedMinute,
       groupId: 0,
+      imageName: uuidv4(),
     };
     setLoading(true);
+    console.log(image);
+
     try {
-      await AddPlant(plant, image).then(() => {
-        //
-        FetchPlants(dispatch);
-        setLoading(false);
-      });
+      AddPlant(dispatch, plant, image);
+      // await PostPlant(plant, image).then(() => {
+      //   //
+      // });
     } catch (E) {
+      //display message failed
       console.log(E);
     }
   }
@@ -116,7 +122,10 @@ export default function AddPlantForm({ route }) {
             justifyContent: "center",
           }}
         >
-          <Button title="Pick an image from camera roll" onPress={pickImage} />
+          <Button
+            title="Pick an image from camera roll"
+            onPress={pickImageBase64}
+          />
           {image && (
             <Image source={image} style={{ width: 200, height: 200 }} />
           )}

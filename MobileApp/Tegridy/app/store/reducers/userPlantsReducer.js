@@ -8,6 +8,8 @@ export const userPlantsReducer = (state = userPlants, action) => {
     case ADD_PLANT:
       userPlants.push(action.value);
       storeDataPlants(userPlants);
+      console.log('storing');
+      console.log(userPlants);
       return { ...state, data: userPlants };
     case UPDATE_PLANT:
       const index = userPlants.findIndex((x) => x.id === action.value.id);
@@ -16,7 +18,6 @@ export const userPlantsReducer = (state = userPlants, action) => {
         plants[index] = action.value;
         userPlants = plants;
       }
-      // SAVE IT HERE
       storeDataPlants(userPlants);
       return { ...state, data: userPlants };
     case FETCH_PLANTS: //
@@ -29,7 +30,6 @@ export const userPlantsReducer = (state = userPlants, action) => {
 
 function storeDataPlants(plants) {
   try {
-    // console.log('savedPlants not found')
     storeData("@Tegridy_User_Plants", JSON.stringify(plants));
   } catch (e) {
     console.log("CANT STORE");

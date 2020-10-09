@@ -35,15 +35,30 @@ export default function PlantTypes() {
     setSelected(id);
   }
 
-  return (<View style={{flexDirection:'column', flex:1, alignContent:'space-between'}}>
-    <PlantTypeList
-      list={list}
-      selected={selected}
-      onSelectItem={setSelected}
-    ></PlantTypeList>
-         <ConfirmButton
-         onPress={()=>navigation.push('Add Plant', list[0])}
-         text="Next"
+  return (
+    <View
+      style={{
+        flexDirection: "column",
+        flex: 1,
+        alignContent: "space-between",
+      }}
+    >
+      <PlantTypeList
+        list={list}
+        selected={selected}
+        onSelectItem={setSelected}
+      ></PlantTypeList>
+      <ConfirmButton
+        onPress={() => {
+          let plant;
+          if (selected == -1) {
+             plant = new Object();
+          } else {
+              plant=list[selected];
+          }
+          navigation.push("Add Plant", plant);
+        }}
+        text="Next"
       ></ConfirmButton>
     </View>
   );

@@ -119,7 +119,7 @@ export function UpdatePlantActionStatus(id) {
   });
 }
 
-export function AddPlant(plant, image) {
+export function PostPlant(plant, image) {
   plant.userId = getUserId();
   const data = new FormData();
   data.append("photo", {
