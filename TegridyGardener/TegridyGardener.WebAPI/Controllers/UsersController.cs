@@ -14,6 +14,14 @@ namespace TegridyGardener.WebAPI.Controllers
         {
             return Ok();
         }
+        
+        [HttpGet]
+        [EnableCors("AllowAll")]
+        [Route("Ping")]
+        public IActionResult GetUserPlants(int userId)
+        {
+            return Ok();
+        }
 
     }
 }

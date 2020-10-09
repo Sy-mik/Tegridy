@@ -16,7 +16,7 @@ namespace Persistence
             {
                 lock (x)
                 {
-                    PlantsAudit.Add(MockedData.scheduledAction);
+//                    PlantsAudit.Add(MockedData.scheduledAction);
                     PlantsInfo.Add(MockedData.plantInfo);
                     Plants.Add(MockedData.plant);
                     Users.Add(MockedData.user);

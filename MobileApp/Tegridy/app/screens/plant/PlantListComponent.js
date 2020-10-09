@@ -19,8 +19,11 @@ export default function PlantListComponent({
 }) {
   function Item({ item }) {
     return (
-      <TouchableOpacity onPress={() =>{
-        onPressItem(item)}}>
+      <TouchableOpacity
+        onPress={() => {
+          onPressItem(item);
+        }}
+      >
         <View
           style={{
             flex: 1,
@@ -58,7 +61,7 @@ export default function PlantListComponent({
       }
       data={data}
       renderItem={({ item }) => <Item item={item}></Item>}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item, index) => index + item.id} // might be wrong
     />
   );
 }

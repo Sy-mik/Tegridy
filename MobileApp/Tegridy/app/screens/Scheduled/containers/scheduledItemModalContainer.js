@@ -45,12 +45,10 @@ export default function ScheduledItemModalContainer({
     toggle(true);
     setIsDatePickerOpen(false);
     UpdatePlantActionDate(selectedModalItem.id, date).then(() => {
-      FetchScheduled(dispatch);
     });
   }
   function MarkAsDone() {
     UpdatePlantActionStatus(selectedModalItem.id).then(() => {
-      FetchScheduled(dispatch);
       toggle(false);
     });
   }

@@ -51,7 +51,7 @@ export default function AddPlantForm({ route }) {
         base64: true,
       });
       if (!result.cancelled) {
-        setImage(result);
+        setImage(result);// 
       }
     } catch (E) {
       console.log(E);
@@ -89,21 +89,22 @@ export default function AddPlantForm({ route }) {
     >
       <ScrollView style={styles.mainContainer}>
         <TextInputForm
+          keyboardType="default"
           label="Name"
-          callback={setSelectedName}
+          setValue={setSelectedName}
           value={selectedName}
         ></TextInputForm>
 
         <TextInputForm
           label="Watering in mililiters"
-          callback={setSelectedWatering}
+          setValue={setSelectedWatering}
           value={selectedWatering.toString()}
           keyboardType="numeric"
         ></TextInputForm>
 
         <TextInputForm
           label="Hours between watering"
-          callback={setSelectedWateringPeriod}
+          setValue={setSelectedWateringPeriod}
           value={selectedWateringPeriod.toString()}
           keyboardType="numeric"
         ></TextInputForm>

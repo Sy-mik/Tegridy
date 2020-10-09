@@ -53,13 +53,14 @@ export default function InputScreenModal({
             onChangeText={(text) => setTempValue(text)}
             autoFocus={true}
             value={tempValue}
-            keyboardType="numeric"
+            keyboardType={keyboardType}
           />
 
           <Text style={{ fontSize: 40 }}>ml</Text>
         </View>
       </View>
       <ConfirmButton
+        loading={false}
         onPress={() => {
           setValue(tempValue);
           toggle();

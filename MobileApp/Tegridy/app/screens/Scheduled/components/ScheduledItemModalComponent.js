@@ -9,6 +9,7 @@ import {
   Image,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { webApiUri } from "../../../services/apiCalls";
 
 export default function ScheduledItemModalComponent({
   isOpen,
@@ -25,7 +26,6 @@ export default function ScheduledItemModalComponent({
         ? webApiUri + "images/" + newItem.imageName
         : newItem.imageUri;
   }
-  console.log(newItem);
   return (
     <View style={{ height: 0 }}>
       <Modal

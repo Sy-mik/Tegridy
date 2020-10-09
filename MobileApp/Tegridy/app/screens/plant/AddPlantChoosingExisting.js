@@ -28,16 +28,19 @@ export default function () {
         <Text style={{ fontSize: 30, fontWeight: "600", marginTop: 5 }}>
           Pick Existing
         </Text>
-        <PlantTypeList list={list} onSelectItem={setSelected}></PlantTypeList>
+        <PlantTypeList
+          selected={selected}
+          list={list} onSelectItem={setSelected}></PlantTypeList>
       </View>
       <ConfirmButton
+        loading={false}
         text="Next"
         onPress={() => {
           var plant = list.find((x) => x.id == selected);
           if (selected != -1) {
             var plant = list.find((x) => x.id == selected);
           }
-          navigation.push("Add Plant", { plant: plant });
+          navigation.navigate("Add Plant", { plant: plant });
         }}
       ></ConfirmButton>
     </View>

@@ -26,14 +26,14 @@ export default function PlantListContainer() {
   }, []);
 
   function onPressItem(item) {
-    navigation.navigate("Plant", { plant: item });
+    navigation.push("Plant", { plant: item });
   }
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
         <Text
-          onPress={() => navigation.push("Choose Type")}
+          onPress={() => navigation.navigate("Choose Type")}
           style={{ marginRight: 16, fontSize: 18, fontWeight: "500" }}
         >
           Add

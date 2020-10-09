@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { AsyncStorage } from "react-native";
 
 import { useSelector, useDispatch } from "react-redux";
 import ScheduledItemsListComponent from "../components/ScheduledItemsListComponent";
@@ -29,6 +30,16 @@ export default function ScheduledItemsListContainer({ openModal }) {
     calculateDayOfTheAction();
     setIsAddingNewDataToScheduled(false);
   }, [dataReducer]);
+
+  // _getAll = async () => {
+  //   try {
+  //     console.log("ALLL");
+
+  //     return await AsyncStorage.getAllKeys();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   function calculateDayOfTheAction() {
     let item = data[listIndex];

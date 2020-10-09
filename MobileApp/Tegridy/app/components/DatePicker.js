@@ -64,8 +64,6 @@ export default function DatePicker({
               timeZoneOffsetInMinutes={0}
               value={date}
               mode={"datetime"}
-              is24Hour={true}
-              display="default"
               onChange={onChange}
             />
           </View>

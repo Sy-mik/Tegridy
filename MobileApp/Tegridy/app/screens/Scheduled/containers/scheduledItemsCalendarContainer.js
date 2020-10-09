@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 
-import ScheduledItemsCalendar from "../components/ScheduledItemsCalendar";
+import ScheduledItemsCalendar from "../components/ScheduledItemsCalendar.js";
 import { useDispatch, useSelector } from "react-redux";
 import { useModalState } from "../../../hooks/useModalState";
 import { updateMarkedDates } from "../../../store/actions";
-import ScheduleActionModalContainer from "./ScheduledActionModalContainer";
 import CalendarActionContainer from "./calendarActionContainer";
 import { View } from "react-native";
 
@@ -29,7 +28,7 @@ export default function ScheduledItemsCalendarContainer({
   }
 
   return (
-    <View >
+    <View>
       <ScheduledItemsCalendar
         setIsScheduledModalOpen={setIsScheduledModalOpen}
         modalVisible={modalVisible}

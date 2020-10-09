@@ -5,13 +5,13 @@ import { Feather } from "@expo/vector-icons";
 import PlantList from "../screens/PlantList";
 import AddPlantForm from "../screens/addPlantForm/AddPlantForm";
 import { createStackNavigator } from "@react-navigation/stack";
-import Plant from "../screens/plant/Plant";
 import ScheduledActionForm from "../screens/Scheduled/ScheduledActionForm";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import PlantTypes from "../screens/PlantTypes";
 import ScheduledListScreen from "../screens/ScheduledListScreen";
-import InputScreen from "../components/InputScreen";
+import PlantScreen from "../screens/plant/PlantScreen";
+import { StatusBar } from "react-native";
 const BottomTab = createBottomTabNavigator();
 
 const HomeStack = createStackNavigator();
@@ -23,11 +23,32 @@ export default function BottomTabNavigator({ navigation, route }) {
   //    navigation.setOptions({ headerTitle: getHeaderTitle(route) });
 
   return (
-    <BottomTab.Navigator>
+    <BottomTab.Navigator
+      options={{
+        title: "",
+        title: "My home",
+        headerStyle: {
+          backgroundColor: "#f4511e",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          fontWeight: "bold",
+        },
+      }}
+    >
       <BottomTab.Screen
         name="Home"
+        component={ScheduledListScreen}
         options={{
           title: "",
+          headerStyle: {
+            backgroundColor: "#f4511e",
+          },
+          headerTintColor: "#fff",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+
           tabBarIcon: ({ focused }) => (
             <TouchableOpacity>
               <Feather
@@ -39,17 +60,7 @@ export default function BottomTabNavigator({ navigation, route }) {
             </TouchableOpacity>
           ),
         }}
-      >
-        {() => (
-          <HomeStack.Navigator>
-            <HomeStack.Screen
-              name="Scheduled"
-              component={ScheduledListScreen}
-            />
-            <HomeStack.Screen name="Plant" component={Plant} />
-          </HomeStack.Navigator>
-        )}
-      </BottomTab.Screen>
+      />
 
       <BottomTab.Screen
         name="Links"
@@ -59,7 +70,6 @@ export default function BottomTabNavigator({ navigation, route }) {
             <TouchableOpacity>
               <Entypo
                 style={{ padding: 10 }}
-                color="grey"
                 size={25}
                 name="list"
                 color={focused ? "green" : "grey"}
@@ -71,7 +81,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         {() => (
           <HomeStack.Navigator>
             <HomeStack.Screen name="Plants" component={PlantList} />
-            <HomeStack.Screen name="Plant" component={Plant} />
+            <HomeStack.Screen name="Plant" component={PlantScreen} />
             <HomeStack.Screen name="Choose Type" component={PlantTypes} />
             <HomeStack.Screen name="Add Plant" component={AddPlantForm} />
             <HomeStack.Screen

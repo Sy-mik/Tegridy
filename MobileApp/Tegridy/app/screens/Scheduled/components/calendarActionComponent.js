@@ -1,15 +1,8 @@
 import React from "react";
 import { View, Text, Modal } from "react-native";
-import ScheduledActionForm from "../ScheduledActionForm";
-import PlantTypeList from "../../addPlantForm/PlantTypeList";
-import ScheduledItemsListContainer from "../containers/scheduledItemsListContainer";
 import ScheduledItemsListComponent from "./ScheduledItemsListComponent";
-import PlantList from "../../PlantList";
-import PlantListComponent from "../../plant/PlantListComponent";
 
 export default function CalendarActionComponent({
-  isOpen,
-  onDismiss,
   scheduledDate,
   schedeuledItems,
   openModal
@@ -40,6 +33,9 @@ export default function CalendarActionComponent({
           Planned
         </Text>
         <ScheduledItemsListComponent
+          dayOfTheAction={""}
+          monthOfTheAction={""}
+          onScrollScheduledItems={()=>{}}
           openModal={openModal}
           data={schedeuledItems}
         ></ScheduledItemsListComponent>

@@ -30,7 +30,7 @@ namespace BusinessLogic
                     var rule = new Rule()
                     {
                         Days = plantsActionDto.Days,
-                        WaterInMilliliters = plantsActionDto.AmountOfWaterMilliliters
+                        WaterInMilliliters = plantsActionDto.AmountOfWaterMilliliters,
                     };
 
                     plant.Rule = rule;

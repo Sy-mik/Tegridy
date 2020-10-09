@@ -1,0 +1,37 @@
+[
+  {
+    "id": "2f2cdea8-97cf-4fee-a0cb-c2ec396ecc45",
+    "name": "Gardenia",
+    "plantInfoId": null,
+    "userId": 0,
+    "groupId": 0,
+    "imageName": null,
+    "imageUri": "https://www.weranda.pl/cache/700-800/bfe41a533e4ae75fe529cc4ccb6c5a63/5532_12514559960.jpg",
+    "rule": {
+      "id": 2,
+      "plantId": "2f2cdea8-97cf-4fee-a0cb-c2ec396ecc45",
+      "userId": 0,
+      "name": null,
+      "days": 16,
+      "wateringInMililiters": 24
+    }
+  },
+  {
+    "id": "df6dd02b-f0ff-4d7f-b32f-8032b3f720dc",
+    "name": "Fittonia",
+    "plantInfoId": null,
+    "wateringInMililiters": 24,
+    "userId": 0,
+    "groupId": 0,
+    "imageName": null,
+    "imageUri": "https://digitalprodyatesauweb.blob.core.windows.net/cache/3/4/b/7/e/5/34b7e5bba0c4080282852a78213404c050a41144.png",
+    "rule": {
+      "id": 3,
+      "plantId": "df6dd02b-f0ff-4d7f-b32f-8032b3f720dc",
+      "userId": 0,
+      "name": null,
+      "days": 0,
+      "wateringInMililiters": 12
+    }
+  }
+]

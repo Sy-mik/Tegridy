@@ -6,6 +6,7 @@ namespace Model
     public class ScheduledAction
     {
         public int Id { get; set; }
+        
         public int AmountOfWaterMilliliters { get; set; }
 
         public Guid PlantId { get; set; }

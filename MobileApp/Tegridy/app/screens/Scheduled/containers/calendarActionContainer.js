@@ -7,6 +7,7 @@ import { ScheduledItemsFactory } from "../../../services/ScheduleItemFactory";
 import PlantListComponent from "../../plant/PlantListComponent";
 import { View } from "react-native";
 import ScheduleActionModalContainer from "./ScheduledActionModalContainer";
+
 export default function CalendarActionContainer({
   isOpen,
   onDismiss,
@@ -20,19 +21,24 @@ export default function CalendarActionContainer({
 
   useEffect(() => {
     let newItems = [];
-    if (data.length == 0) {
-      FetchPlants(dispatch);
-    }
-
+    console.log('CALENDAR ACTION DATA');
+    console.log(data);
+    if(data){
     data.forEach((element) => {
       let binaryDay = Math.pow(2, new Date(scheduledDate).getDay());
-
+      
+      console.log(`element.rule.days ${element.rule.days} binaryDay ${binaryDay}`)
       if (IsFlagSet(element.rule.days, binaryDay)) {
+        console.log('PUSHING');
+        console.log(element);
         let item = itemFactory.CreateNewScheduledItem(element, scheduledDate);
         newItems.push(item);
       }
     });
     setItems(newItems);
+    console.log("new ITEMS");
+    console.log(items);
+    }
   }, [isOpen]); //
 
   function IsFlagSet(value, flag) {

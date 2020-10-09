@@ -24,7 +24,6 @@ namespace TegridyGardener.WebAPI.Controllers
         private readonly IPlantCrudService _plantCrudService;
         private readonly IPlantInfoService _plantInfoService;
         private readonly IHostingEnvironment _env;
-        private readonly TegridyDbContext _dbContext;
 
         public PlantsController(
             IPlantsGroupService groupService,
@@ -37,7 +36,6 @@ namespace TegridyGardener.WebAPI.Controllers
             _plantCrudService = plantCrudService;
             _plantInfoService = plantInfoService;
             _env = env;
-            _dbContext = dbContext;
         }
 
         [HttpGet]

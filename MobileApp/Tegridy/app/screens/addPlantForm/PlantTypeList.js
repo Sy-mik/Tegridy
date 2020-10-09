@@ -13,7 +13,6 @@ export default function PlantTypeList({ list, selected, onSelectItem }) {
           flex: 1,
           flexDirection: "row",
           justifyContent: "space-between",
-          backgroundColor: "#fff",
           padding: 10,
           marginVertical: 4,
           marginHorizontal: 16,

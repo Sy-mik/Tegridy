@@ -11,7 +11,6 @@ import { Entypo } from "@expo/vector-icons";
 
 import DatePicker from "../../components/DatePicker";
 import { AddPlantAction } from "../../services/apiCalls";
-import FetchScheduled from "../../store/FetchScheduled";
 import { useDispatch } from "react-redux";
 import { DefaultButton } from "../../components/DefaultButton";
 import DaysOfWeek from "./DaysOfWeek";
@@ -52,7 +51,6 @@ export default function ScheduleWateringModal({
       amountOfWaterMilliliters: new Number(waterInMililiters),
     };
     AddPlantAction(action).then(() => {
-      FetchScheduled(dispatch);
       toggle(false);
     });
   }

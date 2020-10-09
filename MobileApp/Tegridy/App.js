@@ -11,13 +11,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 import BottomTabNavigator from "./app/navigation/navigation";
 import AddPlantForm from "./app/screens/addPlantForm/AddPlantForm";
 import FetchPlants from "./app/store/FetchPlants";
-import FetchScheduled from "./app/store/FetchScheduled";
-import FetchRules from "./app/store/FetchRules";
 
-import { GetPlants, GetScheduled } from "./app/services/apiCalls";
 import {
-  fetchPlants,
-  fetchScheduled,
+  GetPlants,
+  GetScheduled,
+  CheckConnection,
+} from "./app/services/apiCalls";
+import {
+  isConnectedToServer,
+  setIsConnectedToServer,
   updateMarkedDates,
 } from "./app/store/actions";
 
@@ -44,21 +46,20 @@ export default function App(props) {
         });
       } catch (e) {
         // We might want to provide this error information to an error reporting service
-        console.warn(e);
+        store.dispatch(setIsConnectedToServer(false));
+        await prepareResources();
       } finally {
         setLoadingComplete(true);
+        store.dispatch(isConnectedToServer());
       }
     }
 
     loadResourcesAndDataAsync();
   }, []);
 
-  prepareResources = async () => {
-    await Promise.all([
-      FetchRules(store.dispatch),
-      FetchScheduled(store.dispatch),
-      FetchPlants(store.dispatch),
-    ]);
+  const prepareResources = async () => {
+    // FetchRules(store.dispatch, isLocal),
+    await FetchPlants(store.dispatch);
   };
 
   if (!isLoadingComplete && !props.skipLoadingScreen) {
@@ -85,7 +86,7 @@ export default function App(props) {
   } else {
     return (
       <Provider store={store}>
-        <View style={styles.container}>
+        <View style={styles.container}> 
           <NavigationContainer
             theme={MyTheme}
             ref={containerRef}

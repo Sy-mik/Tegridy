@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { GetSuggestedActionForPlant } from "../../services/apiCalls";
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
-import TextInputForm from "../../components/TextInputForm";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { AntDesign } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { View, Text, StyleSheet } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 
-import {
-  TouchableHighlight,
-  TouchableWithoutFeedback,
-  TouchableOpacity,
-} from "react-native-gesture-handler";
+import { TouchableOpacity } from "react-native-gesture-handler";
 import ScheduleWateringModal from "./ScheduleWateringModal";
+
 export default function ScheduledActionForm({
   plantId,
   scheduledDate,

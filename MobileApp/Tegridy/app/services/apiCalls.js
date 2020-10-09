@@ -2,14 +2,14 @@ import * as React from "react";
 import { useDispatch } from "react-redux";
 import * as signalR from "@aspnet/signalr";
 
-export const webApiUri = "http://1e6c2b1167d8.ngrok.io/";
+export const webApiUri = "http://ca78c6305619.ngrok.io/";
 //const webApiUri = 'http://localhost:5000/'
 
 const plantsActionsHub = "plantsActionsHub/";
 const plantsUri = "Plants/";
 const userUri = "user/";
 const scheduledActionsUri = "scheduledActions/";
-const rulesUri = 'rules/'
+const rulesUri = "rules/";
 const typesUri = "types/";
 
 export function RemoveScheduled(id) {
@@ -98,7 +98,7 @@ export function UpdatePlantActionDate(id, date) {
 
 export function GetRules() {
   let userId = getUserId();
-  return fetch(webApiUri + rulesUri + userUri+userId, {
+  return fetch(webApiUri + rulesUri + userUri + userId, {
     method: "GET",
     headers: {
       Accept: "application/json",
@@ -115,7 +115,7 @@ export function UpdatePlantActionStatus(id) {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body:JSON.stringify(),
+    body: JSON.stringify(),
   });
 }
 
@@ -141,6 +141,7 @@ export function AddPlant(plant, image) {
     body: data,
   });
 }
+
 export function GetPlants() {
   return fetch(webApiUri + plantsUri + userUri + getUserId(), {
     method: "GET",
@@ -163,6 +164,16 @@ export function GetTypes() {
 
 export function GetScheduled() {
   return fetch(webApiUri + scheduledActionsUri + userUri + getUserId(), {
+    method: "GET",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+  });
+}
+
+export function CheckConnection() {
+  return fetch(webApiUri + "Ping", {
     method: "GET",
     headers: {
       Accept: "application/json",

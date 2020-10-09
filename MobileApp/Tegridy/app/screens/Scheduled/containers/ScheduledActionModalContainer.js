@@ -14,14 +14,11 @@ export default function ScheduleActionModalContainer({
   scheduledDate,
   schedeuledItems,
   data,
-  openModal,
 }) {
   const [isScheduledModalOpen, setIsScheduledModalOpen] = useModalState(false);
   const [selectedItem, setSelectedItem] = React.useState();
 
   function openModal(item) {
-    console.log("OPENING MODAL");
-    console.log(item);
     setSelectedItem(item);
     setIsScheduledModalOpen(true);
   }

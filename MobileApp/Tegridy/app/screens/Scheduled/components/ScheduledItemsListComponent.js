@@ -11,27 +11,30 @@ export default function ScheduledItemsListComponent({
   data,
   openModal,
 }) {
+
   return (
     <View>
-      <Text style={styles.header3}>{monthOfTheAction}</Text>
-      <Text style={styles.header1}>{dayOfTheAction}</Text>
-      <FlatList
-        onScroll={(e) => {
-          if (onScrollScheduledItems) {
-            onScrollScheduledItems(e);
-          }
-        }}
-        horizontal={true}
-        data={data}
-        showsHorizontalScrollIndicator={false}
-        keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (//
-          <ScheduledItemCard
-            item={item}
-            onClick={openModal}
-          ></ScheduledItemCard>
-        )}
-      ></FlatList>
+      <Text style={styles.header3}>{monthOfTheAction.toString()}</Text>
+      <Text style={styles.header1}>{dayOfTheAction.toString()}</Text>
+        <FlatList
+          onScroll={(e) => {
+            if (onScrollScheduledItems) {
+              onScrollScheduledItems(e);
+            }
+          }}
+          horizontal={true}
+          data={data}
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(item, index) => item + index}
+          renderItem={(
+            { item } //
+          ) => (
+            <ScheduledItemCard
+              item={item}
+              onClick={openModal}
+            ></ScheduledItemCard>
+          )}
+        ></FlatList>
     </View>
   );
 }

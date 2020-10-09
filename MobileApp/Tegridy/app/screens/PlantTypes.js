@@ -43,7 +43,7 @@ export default function PlantTypes() {
     ></PlantTypeList>
          <ConfirmButton
          onPress={()=>navigation.push('Add Plant', list[0])}
-        text="Next"
+         text="Next"
       ></ConfirmButton>
     </View>
   );

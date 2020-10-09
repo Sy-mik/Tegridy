@@ -1,13 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, SafeAreaView, RefreshControl } from "react-native";
+import { View, StyleSheet, SafeAreaView, RefreshControl, StatusBar } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useDispatch } from "react-redux";
-import FetchScheduled from "../store/FetchScheduled";
-import FetchRules from "../store/FetchRules";
 import { useModalState } from "../hooks/useModalState";
 import ScheduledItemsListContainer from "./Scheduled/containers/scheduledItemsListContainer";
 import ScheduledItemsCalendarContainer from "./Scheduled/containers/scheduledItemsCalendarContainer";
 import ScheduledItemModalContainer from "./Scheduled/containers/scheduledItemModalContainer";
+import { AsyncStorage } from "react-native";
 
 export default function ScheduledListScreen({ navigation }) {
   const dispatch = useDispatch();
@@ -19,18 +18,12 @@ export default function ScheduledListScreen({ navigation }) {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    FetchScheduled(dispatch);
-    FetchRules(dispatch);
-    setRefreshing(false);
+    setRefreshing(false);//
   }, [refreshing]);
 
   function openModal(item) {
     setIsModalOpen(true);
     setSelectedModalItem(item);
-  }
-
-  function dismissModal() {
-    setIsModalOpen(false);
   }
 
   return (

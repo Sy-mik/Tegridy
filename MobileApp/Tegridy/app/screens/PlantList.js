@@ -13,7 +13,6 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { GetPlants, webApiUri } from "../services/apiCalls";
-import { fetchScheduled, fetchPlants } from "../store/actions";
 
 import { useDispatch, useSelector } from "react-redux";
 import FetchPlants from "../store/FetchPlants";

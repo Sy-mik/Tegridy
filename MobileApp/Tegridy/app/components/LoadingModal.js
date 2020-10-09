@@ -10,7 +10,7 @@ export default function LoadingModal({ modalVisible, setModalVisible }) {
         transparent={true}
         visible={modalVisible}
         onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
+          alert("Modal has been closed.");
         }}
       >
         <View style={styles.centeredView}>

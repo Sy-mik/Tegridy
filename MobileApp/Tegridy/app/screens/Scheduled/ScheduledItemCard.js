@@ -10,6 +10,26 @@ export default function ScheduledItemCard({ item, onClick }) {
     ? webApiUri + "images/" + item.imageName
     : item.imageUri;
 
+  function parseNumber(number) {
+    number = new Number(number);
+    if (number > 3 && number < 21) {
+      return number + "th";
+    }
+    let date = "";
+    let dateNumber = number % 10;
+    if (dateNumber == 1) {
+      date = number + "st";
+    } else if (dateNumber == 2) {
+      date += number + "nd";
+    } else if (dateNumber == 3) {
+      date = number + "rd";
+    } else {
+      date = number + "th";
+    }
+
+    return date;
+  }
+
   let weekday = [
     "Sunday",
     "Monday",
@@ -23,12 +43,15 @@ export default function ScheduledItemCard({ item, onClick }) {
   let convertedDate =
     weekday[date.getDay()] + " " + date.getHours() + ":" + date.getMinutes();
 
+  let convertedWeekDay = weekday[date.getDay()] + " " + parseNumber(date.getDate());
+
   return (
     <TouchableOpacity
       activeOpacity={0.7}
       style={{ width: 160, height: 150, marginLeft: 30 }}
       onPress={() => {
-        onClick(item)}}
+        onClick(item);
+      }}
     >
       <View
         style={{
@@ -59,10 +82,12 @@ export default function ScheduledItemCard({ item, onClick }) {
           />
         </View>
         <View style={styles.iconsInfo}>
-          <Text style={styles.cardTitle}>{item.name} </Text>
+          <Text style={styles.cardTitle}>{item.name.toString()} </Text>
         </View>
         <View style={styles.iconsInfo}>
-          <Text style={styles.dayOfWeekText}>{convertedDate} </Text>
+          <Text style={styles.dayOfWeekText}>
+            {convertedWeekDay.toString()}{" "}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>

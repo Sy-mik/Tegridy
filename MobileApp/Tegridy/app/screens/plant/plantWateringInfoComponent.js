@@ -20,7 +20,7 @@ export default function PlantWateringInfoComponent({
   setSelectedDays,
 }) {
   return (
-    <View style={styles.centeredView}>
+    <View>
       {/* <InputDialog
           isAlertOpen={isAlertOpen}
           setIsAlertOpen={setIsAlertOpen}

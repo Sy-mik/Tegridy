@@ -32,48 +32,20 @@ namespace Model
                     },
                     PlantInfo = plantInfo
                 };
-                
-                public static ScheduledAction scheduledAction = new ScheduledAction()
-                {
-                    Id = 1,
-                    Plant = plant,
-                    Recommendation = "",
-                    IsDone = false,
-                    ScheduledDate = DateTime.Now.AddHours(3),
-                    AmountOfWaterMilliliters = 24
-                };
-                
-                 
-                public static ScheduledAction scheduledAction1 = new ScheduledAction()
-                {
-                    Id = 2,
-                    Plant = plant,
-                    Recommendation = "",
-                    IsDone = false,
-                    ScheduledDate = DateTime.Now.AddHours(3),
-                    AmountOfWaterMilliliters = 24
-                }; 
-                public static ScheduledAction scheduledAction2 = new ScheduledAction()
-                {
-                    Id = 3,
-                    Plant = plant,
-                    Recommendation = "",
-                    IsDone = false,
-                    ScheduledDate = DateTime.Now.AddHours(3),
-                    AmountOfWaterMilliliters = 24
-                };
-                
-                 
-                public static ScheduledAction scheduledAction3 = new ScheduledAction()
-                {
-                    Id = 4,
-                    Plant = plant,
-                    Recommendation = "",
-                    IsDone = false,
-                    ScheduledDate = DateTime.Now.AddHours(3),
-                    AmountOfWaterMilliliters = 24
-                };
-                
+        
+        public static Plant SecondPlant = new Plant()
+        {
+            Id = Guid.NewGuid(),
+            Name = "Fittonia",
+            ImageUri = "https://digitalprodyatesauweb.blob.core.windows.net/cache/3/4/b/7/e/5/34b7e5bba0c4080282852a78213404c050a41144.png",
+            Rule = new Rule()
+            {
+                Id = 3,
+                WaterInMilliliters = 24
+            },
+            PlantInfo = plantInfo
+        };
+        
                public static User user = new User()
                 {
                     Id = 1,
@@ -84,10 +56,9 @@ namespace Model
                         {
                             Id = 1,
                             Name = "Default Group",
-                            Plants = new List<Plant>(){plant}
+                            Plants = new List<Plant>(){plant, SecondPlant}
                         }
                     },
-                    PlantsAudits = { scheduledAction,scheduledAction1,scheduledAction2,scheduledAction3 }
                 };
     }
 }
