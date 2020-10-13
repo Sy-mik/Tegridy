@@ -6,10 +6,6 @@ import Colors from "./../../constants/Colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function ScheduledItemCard({ item, onClick }) {
-  const imageUri = item.imageName
-    ? webApiUri + "images/" + item.imageName
-    : item.imageUri;
-
   function parseNumber(number) {
     number = new Number(number);
     if (number > 3 && number < 21) {
@@ -43,12 +39,13 @@ export default function ScheduledItemCard({ item, onClick }) {
   let convertedDate =
     weekday[date.getDay()] + " " + date.getHours() + ":" + date.getMinutes();
 
-  let convertedWeekDay = weekday[date.getDay()] + " " + parseNumber(date.getDate());
+  let convertedWeekDay =
+    weekday[date.getDay()] + " " + parseNumber(date.getDate());
 
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      style={{ width: 160, height: 150, marginLeft: 30 }}
+      style={{ width: 160, height: 155, marginLeft: 30 }}
       onPress={() => {
         onClick(item);
       }}
@@ -56,19 +53,17 @@ export default function ScheduledItemCard({ item, onClick }) {
       <View
         style={{
           width: 160,
-          height: 150,
+          height: 155,
         }}
       >
         <Image
           style={styles.cardImage}
           source={{
-            uri: item.imageName
-              ? webApiUri + "images/" + item.imageName
-              : item.imageUri,
+            uri: item.imageUri,
           }}
         />
         <View>
-          <Feather
+          {/* <Feather
             style={{
               position: "absolute",
               bottom: 5,
@@ -79,14 +74,14 @@ export default function ScheduledItemCard({ item, onClick }) {
             size={20}
             // color="white"
             name="cloud-drizzle"
-          />
+          /> */}
         </View>
         <View style={styles.iconsInfo}>
           <Text style={styles.cardTitle}>{item.name.toString()} </Text>
         </View>
         <View style={styles.iconsInfo}>
           <Text style={styles.dayOfWeekText}>
-            {convertedWeekDay.toString()}{" "}
+            {convertedWeekDay.toString()}
           </Text>
         </View>
       </View>
@@ -99,7 +94,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
     flex: 1,
     flexDirection: "row",
-    marginTop: 5,
+    paddingTop: 5,
   },
   dayOfWeekText: {
     color: Colors.lessImportantText,

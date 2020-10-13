@@ -22,6 +22,7 @@ import {
   setIsConnectedToServer,
   updateMarkedDates,
 } from "./app/store/actions";
+import OperationModalContainer from "./app/helpers/OperationModalContainer";
 
 const RootStack = createStackNavigator();
 
@@ -87,6 +88,7 @@ export default function App(props) {
     return (
       <Provider store={store}>
         <View style={styles.container}> 
+        <OperationModalContainer></OperationModalContainer>
           <NavigationContainer
             theme={MyTheme}
             ref={containerRef}

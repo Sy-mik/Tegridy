@@ -2,16 +2,14 @@ import React, { useState, useEffect } from "react";
 import * as ImagePicker from "expo-image-picker";
 import * as Permissions from "expo-permissions";
 
-import { StyleSheet, Button, Image, Text, View } from "react-native";
+import { StyleSheet, Button, Image, ActionSheetIOS, View } from "react-native";
 import Constants from "expo-constants";
 import { ScrollView } from "react-native-gesture-handler";
 import TextInputForm from "../../components/TextInputForm";
-import { PostPlant } from "../../services/apiCalls";
-import FetchPlants from "../../store/FetchPlants";
 import ConfirmButton from "../../components/ConfirmButton";
 import { useDispatch } from "react-redux";
 import { AddPlant } from "../../store/AddPlant";
-import { v4 as uuidv4 } from "uuid";
+var uuid = require("react-native-uuid");
 
 export default function AddPlantForm({ route }) {
   const [image, setImage] = React.useState(null);
@@ -22,6 +20,7 @@ export default function AddPlantForm({ route }) {
   const [selectedWateringPeriod, setSelectedWateringPeriod] = React.useState(0);
   const [selectedHour, setSelectedHour] = useState(12);
   const [selectedMinute, setSelectedMinute] = useState(0);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -61,26 +60,25 @@ export default function AddPlantForm({ route }) {
   }
 
   async function handleCreateNewPlant() {
-    console.log('handleCreateNewPlant');
     const plant = {
+      id: uuid(),
       plantInfoId: selected,
       name: selectedName,
       wateringInMililiters: selectedWatering,
       wateringHour: selectedHour,
       wateringMinute: selectedMinute,
-      groupId: 0,
-      imageName: uuidv4(),
+      imageName: uuid(),
+      rule: {
+        id: uuid(),
+        days: 0,
+        wateringInMililiters: 0,
+      },
     };
     setLoading(true);
-    console.log(image);
-
     try {
-      AddPlant(dispatch, plant, image);
-      // await PostPlant(plant, image).then(() => {
-      //   //
-      // });
+     AddPlant(dispatch, plant, image);
+      setLoading(false);
     } catch (E) {
-      //display message failed
       console.log(E);
     }
   }

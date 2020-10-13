@@ -8,8 +8,9 @@ import InputScreenModal from "../../components/InputScreen";
 import LoadingModal from "../../components/LoadingModal";
 import ConfirmButton from "../../components/ConfirmButton";
 import UpdatePlantDays from "../../store/UpdatePlantAction";
+import { OpenOperationsModal } from "../../store/ModalOperations";
 
-export default function PlantWateringInfoContainer({ plant }) {
+export default function PlantWateringInfoContainer({ plant, isEditing }) {
   const dispatch = useDispatch();
   const [valuesChanged, setValuesChanged] = useState(false);
   const [selectedDays, setSelectedDays] = useState(0);
@@ -18,14 +19,13 @@ export default function PlantWateringInfoContainer({ plant }) {
   const [isLoading, setIsLoading] = useState(false);
 
   React.useLayoutEffect(() => {
-    console.log('PLANT RULE');
-    console.log(plant)
+    console.log("PLANT RULE");
+    console.log(plant);
     setAmountOfWaterMilliliters(plant.rule.wateringInMililiters);
     setSelectedDays(plant.rule.days);
   }, [plant]);
 
-  function ScheduleWatering() {
-    setIsLoading(true);
+  function SavePlant() {
     let val = selectedDays;
     const plantAction = {
       wateringInMililiters: amountOfWaterMilliliters,
@@ -55,16 +55,20 @@ export default function PlantWateringInfoContainer({ plant }) {
         selectedDays={selectedDays}
         setSelectedDays={setSelectedDays}
         setValuesChanged={setValuesChanged}
-        scheduleWatering={ScheduleWatering}
+        scheduleWatering={SavePlant}
+        isEditing={isEditing}
+        plantName={plant.name}
         amountOfWaterMilliliters={amountOfWaterMilliliters.toString()}
       ></PlantWateringInfoComponent>
-      <View style={{ justifyContent: "flex-end" }}>
+      {isEditing ? (
         <ConfirmButton
           loading={false}
-          onPress={() => ScheduleWatering()}
+          onPress={() => {
+            //SavePlant();
+          }}
           text="Save"
         ></ConfirmButton>
-      </View>
+      ) : null}
     </View>
   );
 }

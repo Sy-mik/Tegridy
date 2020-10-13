@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   View,
@@ -9,17 +9,24 @@ import {
 } from "react-native";
 
 import { AntDesign } from "@expo/vector-icons";
-import { webApiUri } from "../../services/apiCalls";
+import AsyncStorage from "@react-native-community/async-storage";
 
 export default function PlantListComponent({
   refreshing,
   onRefresh,
   data,
   onPressItem,
+  onLongPressItem,
 }) {
   function Item({ item }) {
     return (
       <TouchableOpacity
+        onLongPress={() => {
+          if (!onLongPressItem) {
+            return;
+          }
+          onLongPressItem(item);
+        }}
         onPress={() => {
           onPressItem(item);
         }}
@@ -35,11 +42,7 @@ export default function PlantListComponent({
           <View style={{ flex: 1, flexDirection: "row" }}>
             <Image
               style={{ width: 80, height: 80, borderRadius: 15 }}
-              source={
-                item.imageName
-                  ? { uri: webApiUri + "images/" + item.imageName }
-                  : { uri: item.imageUri }
-              }
+              source={{ uri: item.imageUri }}
             />
             <View style={{ alignSelf: "center" }}>
               <Text style={{ fontSize: 20, marginLeft: 20 }}>{item.name}</Text>

@@ -1,5 +1,5 @@
 import React, { Component, useState, useEffect } from "react";
-
+import * as Haptics from "expo-haptics";
 import {
   FlatList,
   TouchableWithoutFeedback,
@@ -10,7 +10,7 @@ import { Text, View, StyleSheet } from "react-native";
 export default function DaysOfWeek({
   selectedDays,
   setSelectedDays,
-  isVisible,
+  isEditing,
   setValuesChanged,
 }) {
   function IsFlagSet(value, flag) {
@@ -29,13 +29,13 @@ export default function DaysOfWeek({
   };
 
   let daysOfWeek = [
-    { name: "M", value: Days.Monday },
-    { name: "T", value: Days.Tuesday },
-    { name: "W", value: Days.Wednesday },
-    { name: "T", value: Days.Thursday },
-    { name: "F", value: Days.Friday },
-    { name: "S", value: Days.Saturday },
-    { name: "S", value: Days.Sunday },
+    { name: "Monday", value: Days.Monday },
+    { name: "Tuesday", value: Days.Tuesday },
+    { name: "Wednesday", value: Days.Wednesday },
+    { name: "Thursday", value: Days.Thursday },
+    { name: "Friday", value: Days.Friday },
+    { name: "Saturday", value: Days.Saturday },
+    { name: "Sunday", value: Days.Sunday },
   ];
 
   function getIsSelected(value) {
@@ -51,30 +51,25 @@ export default function DaysOfWeek({
   function DayOfWeekCircle({ name, isSelected, onSelect }) {
     return (
       <View>
-        {name == "cancelButton" ? (
-          <DefaultButton
-            onPress={() => setSelectedDays(Days.None)}
-            text="Cancel"
-          ></DefaultButton>
-        ) : (
-          <TouchableWithoutFeedback
-            onPress={() => onSelect()}
+        <TouchableWithoutFeedback
+          onPress={() => {
+            onSelect();
+          }}
+          style={{
+            ...styles.dayOfWeekContainer,
+            backgroundColor: isSelected ? "black" : "white",
+          }}
+        >
+          <Text
             style={{
-              ...styles.dayOfWeekContainer,
-              backgroundColor: isSelected ? "black" : "white",
+              alignSelf: "center",
+              fontSize: 20,
+              color: isSelected ? "white" : "black",
             }}
           >
-            <Text
-              style={{
-                alignSelf: "center",
-                fontSize: 25,
-                color: isSelected ? "white" : "black",
-              }}
-            >
-              {name}
-            </Text>
-          </TouchableWithoutFeedback>
-        )}
+            {name}
+          </Text>
+        </TouchableWithoutFeedback>
       </View>
     );
   }
@@ -82,19 +77,21 @@ export default function DaysOfWeek({
   return (
     <FlatList
       data={daysOfWeek}
-      numColumns={7}
+      numColumns={3}
       showsHorizontalScrollIndicator={false}
       keyExtractor={(item, index) => item + index}
       renderItem={({ item }) => (
         <DayOfWeekCircle
           onSelect={() => {
+            if (!isEditing) return;
             if (IsFlagSet(selectedDays, item.value)) {
-              let flag = selectedDays &~ item.value;
+              let flag = selectedDays & ~item.value;
               setSelectedDays(flag);
             } else {
               setSelectedDays(selectedDays | item.value);
             }
             setValuesChanged(true);
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
           }}
           isSelected={getIsSelected(item.value)}
           name={item.name}
@@ -107,7 +104,7 @@ export default function DaysOfWeek({
 const styles = StyleSheet.create({
   dayOfWeekContainer: {
     margin: 5,
-    width: 40,
+    width: 110,
     height: 40,
 
     backgroundColor: "black",

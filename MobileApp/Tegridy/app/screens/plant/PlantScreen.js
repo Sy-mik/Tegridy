@@ -1,42 +1,67 @@
-import * as React from 'react';
-import { View } from "react-native";
-import { webApiUri } from "../../services/apiCalls";
+import * as React from "react";
+import { Text, View } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 import PlantWateringInfoContainer from "./plantWateringInfoContainer.js";
 import PlantHeaderInfoComponent from "./plantHeaderInfoComponent";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import ConfirmButton from "../../components/ConfirmButton.js";
 
 export default function PlantScreen({ route }) {
   const { plant } = route.params;
-  const imageUri = plant.imageName
-    ? webApiUri + "images/" + plant.imageName
-    : plant.imageUri;
   const itemName = plant.name;
+  const [isEditing, setIsEditing] = React.useState(false);
+  const navigation = useNavigation();
 
-
-  // React.useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerRight: () => (
-  //       <Text
-  //         style={{ margin: 10, fontSize: 18, fontWeight: "500" }}
-  //       >
-  //         History
-  //       </Text>
-  //     ),
-  //   });
-  // }, []);
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () =>
+        !isEditing ? (
+          <TouchableOpacity
+            onLongPress={() => {
+              onPress();
+            }}
+            onPress={() => setIsEditing(true)}
+          >
+            <Text style={{ marginRight: 16, fontSize: 18, fontWeight: "500" }}>
+              Edit
+            </Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onLongPress={() => {
+              onPress();
+            }}
+            onPress={() => {
+              setIsEditing(false);
+            }}
+          >
+            <Text style={{ marginRight: 16, fontSize: 18, fontWeight: "500" }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
+        ),
+    });
+  }, [isEditing]);
 
   return (
     <View
       style={{
         flexDirection: "column",
         height: "100%",
-        justifyContent: "space-between",
+        // justifyContent: "space-between",
       }}
     >
       <PlantHeaderInfoComponent
-        imageUri={imageUri}
+        imageUri={plant.imageUri}
         itemName={itemName}
+        isEditing={isEditing}
+        item={
+          <PlantWateringInfoContainer
+            isEditing={isEditing}
+            plant={plant}
+          ></PlantWateringInfoContainer>
+        }
       ></PlantHeaderInfoComponent>
-      <PlantWateringInfoContainer plant={plant}></PlantWateringInfoContainer>
     </View>
   );
 }

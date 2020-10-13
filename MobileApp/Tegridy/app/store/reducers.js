@@ -5,6 +5,8 @@ import { updateMarkedDatesReducer } from "./reducers/updateMarkedDatesReducer";
 import { scheduledDataReducer } from "./reducers/scheduledDataReducer";
 import { userPlantsReducer } from "./reducers/userPlantsReducer";
 import { connectionManagerReducer } from "./reducers/connectionManagerReducer";
+import { operationsModalReducer } from "./reducers/operationsModalReducer";
+
 let isLoading = false;
 
 const updateIsLoadingReducer = (state = isLoading, action) => {
@@ -24,6 +26,7 @@ const updateIsLoadingReducer = (state = isLoading, action) => {
 const rootReducer = combineReducers({
   scheduledDataReducer: scheduledDataReducer,
   userPlantsReducer: userPlantsReducer,
+  operationsModalReduce: operationsModalReducer,
   updateMarkedDates: updateMarkedDatesReducer,
   isDataLoading: updateIsLoadingReducer,
   connectionManagerReducer: connectionManagerReducer,

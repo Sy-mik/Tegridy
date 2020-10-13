@@ -2,7 +2,11 @@ import React from "react";
 
 const { View, Image, Text, StyleSheet } = require("react-native");
 
-export default function PlantHeaderInfoComponent({imageUri, itemName}) {
+export default function PlantHeaderInfoComponent({
+  imageUri,
+  itemName,
+  item
+}) {
   return (
     <View>
       <Image
@@ -11,7 +15,7 @@ export default function PlantHeaderInfoComponent({imageUri, itemName}) {
         source={{ uri: imageUri }}
       ></Image>
       <View style={styles.informationsContainer}>
-        <Text style={styles.title}>{itemName}</Text>
+        {item}
       </View>
     </View>
   );
@@ -24,8 +28,7 @@ const styles = StyleSheet.create({
   informationsContainer: {
     backgroundColor: "#fff",
     borderRadius: 30,
-    marginTop: -20,
-    padding: 20,
+    marginTop: -30,
   },
   title: {
     fontSize: 30,

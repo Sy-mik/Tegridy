@@ -1,5 +1,10 @@
 import AsyncStorage from "@react-native-community/async-storage";
-import { FETCH_PLANTS, ADD_PLANT, UPDATE_PLANT } from "../actions";
+import {
+  FETCH_PLANTS,
+  ADD_PLANT,
+  UPDATE_PLANT,
+  REMOVE_PLANT,
+} from "../actions";
 
 export let userPlants = { data: [] };
 
@@ -19,6 +24,17 @@ export const userPlantsReducer = (state = userPlants, action) => {
         userPlants = plants;
       }
       storeDataPlants(userPlants);
+      return { ...state, data: userPlants };
+    case REMOVE_PLANT:
+      const removedPlantIndex = userPlants.findIndex(
+        (x) => x.id === action.value
+      );
+      if (removedPlantIndex >= 0) {
+        userPlants.splice(removedPlantIndex, 1);
+        console.log('removing plant');
+        console.log(removedPlantIndex);
+        console.log(userPlants);
+      }
       return { ...state, data: userPlants };
     case FETCH_PLANTS: //
       userPlants = action.data;

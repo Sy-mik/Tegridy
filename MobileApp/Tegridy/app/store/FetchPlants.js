@@ -1,5 +1,11 @@
 import React from "react";
-import { fetchPlants, fetchRules, fetchScheduled, isConnectedToServer, pushScheduledFromRules, updateMarkedDates } from "./actions";
+import {
+  fetchPlants,
+  fetchRules,
+  fetchScheduled,
+  isConnectedToServer,
+  updateMarkedDates,
+} from "./actions";
 import { GetPlants } from "../services/apiCalls";
 import AsyncStorage from "@react-native-community/async-storage";
 import defaultPlants from "../../assets/plants.json";
@@ -55,6 +61,7 @@ function loadPlantsFromLocal(dispatch) {
   let plants;
 
   const data = getData("@Tegridy_User_Plants");
+
   data.then((savedPlants) => {
     try {
       if (!savedPlants) {

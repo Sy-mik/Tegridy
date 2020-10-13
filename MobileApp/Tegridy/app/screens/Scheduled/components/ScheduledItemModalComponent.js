@@ -7,9 +7,12 @@ import {
   TouchableHighlight,
   View,
   Image,
+  Button,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { webApiUri } from "../../../services/apiCalls";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function ScheduledItemModalComponent({
   isOpen,
@@ -21,10 +24,7 @@ export default function ScheduledItemModalComponent({
 }) {
   let image = "";
   if (newItem) {
-    image =
-      newItem !== null && newItem.imageName
-        ? webApiUri + "images/" + newItem.imageName
-        : newItem.imageUri;
+    image = newItem.imageUri;
   }
   return (
     <View style={{ height: 0 }}>
@@ -40,7 +40,19 @@ export default function ScheduledItemModalComponent({
         }}
       >
         <View style={styles.centeredView}>
-          <View
+          <TouchableOpacity
+            style={{
+              alignSelf: "flex-end",
+              padding: 10,
+            }}
+            onPress={() => {
+              onDismiss();
+            }}
+          >
+            <AntDesign name="closecircleo" size={35} color="black" />
+          </TouchableOpacity>
+          <View style={{ alignItems: "center" }}>
+            {/* <View
             style={{
               alignSelf: "center",
               margin: 15,
@@ -49,61 +61,66 @@ export default function ScheduledItemModalComponent({
               height: 5,
               borderRadius: 30,
             }}
-          ></View>
-          <Image
-            style={{
-              borderRadius: 20,
-              width: 200,
-              height: 200,
-            }}
-            source={{
-              uri: image,
-            }}
-          ></Image>
+          ></View> */}
+            <Image
+              style={{
+                borderRadius: 20,
+                width: 200,
+                height: 200,
+              }}
+              source={{
+                uri: image,
+              }}
+            ></Image>
 
-          <Text style={styles.modalText}>{newItem ? newItem.name : null}</Text>
-
-          <TouchableHighlight
-            onPress={() => {
-              // toggle(false);
-            }}
-            style={{ ...styles.openButton }}
-          >
-            <Text style={{ ...styles.textStyle, color: "black" }}>
-              Water: 100ml
+            <Text style={styles.modalText}>
+              {newItem ? newItem.name : null}
             </Text>
-          </TouchableHighlight>
 
-          <TouchableHighlight
-            onPress={() => {
-              openDatePicker();
-            }}
-            style={{ ...styles.openButton }}
-          >
-            <Text style={{ ...styles.textStyle, color: "black" }}>
-              {visibleDate}
-            </Text>
-          </TouchableHighlight>
-
-          <TouchableHighlight
-            onPress={() => markAsDone()}
-            style={{ ...styles.openButton }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <Text style={{ ...styles.textStyle, flex: 1 }}>Mark as done</Text>
-              <FontAwesome5 name="check" size={20} color="black" />
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight
-            style={{ ...styles.openButton, backgroundColor: "black" }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <Text style={{ ...styles.textStyle, color: "white", flex: 1 }}>
-                Run
+            <TouchableHighlight
+              onPress={() => {
+                // toggle(false);
+              }}
+              style={{ ...styles.openButton }}
+            >
+              <Text style={{ ...styles.textStyle, color: "black" }}>
+                Water: 100ml
               </Text>
-              <FontAwesome5 name="check" size={20} color="white" />
-            </View>
-          </TouchableHighlight>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={() => {
+                openDatePicker();
+              }}
+              style={{ ...styles.openButton }}
+            >
+              <Text style={{ ...styles.textStyle, color: "black" }}>
+                {visibleDate}
+              </Text>
+            </TouchableHighlight>
+
+            <TouchableHighlight
+              onPress={() => markAsDone()}
+              style={{ ...styles.openButton }}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text style={{ ...styles.textStyle, flex: 1 }}>
+                  Mark as done
+                </Text>
+                <FontAwesome5 name="check" size={20} color="black" />
+              </View>
+            </TouchableHighlight>
+            <TouchableHighlight
+              style={{ ...styles.openButton, backgroundColor: "black" }}
+            >
+              <View style={{ flexDirection: "row" }}>
+                <Text style={{ ...styles.textStyle, color: "white", flex: 1 }}>
+                  Run
+                </Text>
+                <FontAwesome5 name="check" size={20} color="white" />
+              </View>
+            </TouchableHighlight>
+          </View>
         </View>
       </Modal>
     </View>
@@ -114,7 +131,7 @@ const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
     justifyContent: "flex-start",
-    alignItems: "center",
+    flexDirection: "column",
   },
   openButton: {
     backgroundColor: "#F5F5F5",

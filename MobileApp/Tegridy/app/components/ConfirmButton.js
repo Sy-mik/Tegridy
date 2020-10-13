@@ -6,11 +6,18 @@ import {
   StyleSheet,
   ActivityIndicator,
 } from "react-native";
+import * as Haptics from "expo-haptics";
+
 import Colors from "../constants/Colors";
 
 export default function ConfirmButton({ text, onPress, loading }) {
   return (
-    <TouchableOpacity onPress={() => onPress()}>
+    <TouchableOpacity
+      onPress={() => {
+        onPress();
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+      }}
+    >
       <View style={styles.button}>
         {loading ? (
           <ActivityIndicator size="small" color="white"></ActivityIndicator>

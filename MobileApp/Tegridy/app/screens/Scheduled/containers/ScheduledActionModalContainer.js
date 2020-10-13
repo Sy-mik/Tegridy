@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import CalendarActionComponent from "../components/calendarActionComponent";
 import FetchPlants from "../../../store/FetchPlants";
 import { useModalState } from "../../../hooks/useModalState";
 import { ScheduledItemsFactory } from "../../../services/ScheduleItemFactory";
 import PlantListComponent from "../../plant/PlantListComponent";
-import { View, Modal, Text } from "react-native";
+import { View, Text, Button, Modal } from "react-native";
 import ScheduledItemModalContainer from "./scheduledItemModalContainer";
+import {
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native-gesture-handler";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function ScheduleActionModalContainer({
   isOpen,
@@ -15,7 +20,7 @@ export default function ScheduleActionModalContainer({
   schedeuledItems,
   data,
 }) {
-  const [isScheduledModalOpen, setIsScheduledModalOpen] = useModalState(false);
+  const [isScheduledModalOpen, setIsScheduledModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = React.useState();
 
   function openModal(item) {
@@ -31,43 +36,70 @@ export default function ScheduleActionModalContainer({
   }
 
   return (
-    <View style={{ height: 0 }}>
+    <View>
       <Modal
         presentationStyle="pageSheet"
         animationType="slide"
         transparent={false}
+        visible={isOpen}
         onDismiss={() => {
           onDismiss();
         }}
         onRequestClose={() => {
           onDismiss();
         }}
-        visible={isOpen}
       >
-        <CalendarActionComponent
-          isOpen={isOpen}
-          onDismiss={onDismiss}
-          scheduledDate={scheduledDate}
-          schedeuledItems={schedeuledItems}
-          openModal={openModal}
-        ></CalendarActionComponent>
-
-        <Text style={{ fontSize: 30, margin: 10, fontWeight: "600" }}>
-          All plants
-        </Text>
-
-        <PlantListComponent
-          refreshing={false}
-          onRefresh={() => {}}
-          data={data}
-          onPressItem={openModalMappingFromPlant}
-        ></PlantListComponent>
-
-        <ScheduledItemModalContainer
-          isModalOpen={isScheduledModalOpen}
-          setIsModalOpen={setIsScheduledModalOpen}
-          selectedModalItem={selectedItem}
-        ></ScheduledItemModalContainer>
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "white",
+            borderTopLeftRadius: 30,
+            borderTopRightRadius: 30,
+          }}
+        >
+          <TouchableOpacity
+            style={{
+              alignSelf: "flex-end",
+              padding: 10,
+            }}
+            onPress={() => {
+              onDismiss();
+            }}
+          >
+            <AntDesign name="closecircleo" size={35} color="black" />
+          </TouchableOpacity>
+          {/* <View
+          style={{
+            alignSelf: "center",
+            margin: 15,
+            backgroundColor: "lightgrey",
+            width: 35,
+            height: 5,
+            borderRadius: 30,
+          }}
+        ></View> */}
+          <CalendarActionComponent
+            isOpen={isOpen}
+            onDismiss={onDismiss}
+            scheduledDate={scheduledDate}
+            schedeuledItems={schedeuledItems}
+            openModal={openModal}
+          ></CalendarActionComponent>
+          <Text style={{ fontSize: 30, margin: 10, fontWeight: "600" }}>
+            All plants
+          </Text>
+          <PlantListComponent
+            refreshing={false}
+            onRefresh={() => {}}
+            data={data}
+            onPressItem={openModalMappingFromPlant}
+          ></PlantListComponent>
+          <ScheduledItemModalContainer
+            isModalOpen={isScheduledModalOpen}
+            setIsModalOpen={setIsScheduledModalOpen}
+            selectedModalItem={selectedItem}
+          ></ScheduledItemModalContainer>
+        </View>
       </Modal>
     </View>
   );

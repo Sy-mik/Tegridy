@@ -11,6 +11,12 @@ export const ADD_PLANT = "ADD_PLANT";
 
 export const UPDATE_PLANT = "UPDATE_PLANT";
 
+export const OPEN_OPERATION_MODAL = "OPEN_OPERATION_MODAL";
+
+export const CLOSE_OPERATION_MODAL = "CLOSE_OPERATION_MODAL";
+
+export const REMOVE_PLANT = "REMOVE_PLANT";
+
 export const IS_CONNECTED_TO_SERVER = "IS_CONNECTED_TO_SERVER";
 
 export const SET_IS_CONNECTED_TO_SERVER = "SET_IS_CONNECTED_TO_SERVER";
@@ -35,6 +41,21 @@ export const addPlant = (value) => ({
 
 export const updatePlant = (value) => ({
   type: UPDATE_PLANT,
+  value,
+});
+
+export const openOperationModal = (value) => ({
+  type: OPEN_OPERATION_MODAL,
+  value,
+});
+
+export const closeOperationModal = (value) => ({
+  type: CLOSE_OPERATION_MODAL,
+  value,
+});
+
+export const removePlant = (value) => ({
+  type: REMOVE_PLANT,
   value,
 });
 

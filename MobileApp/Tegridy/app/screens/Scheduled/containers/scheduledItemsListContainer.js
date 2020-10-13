@@ -42,6 +42,9 @@ export default function ScheduledItemsListContainer({ openModal }) {
   // };
 
   function calculateDayOfTheAction() {
+    if(!data){
+      return;
+    }
     let item = data[listIndex];
     if (!item) {
       return;

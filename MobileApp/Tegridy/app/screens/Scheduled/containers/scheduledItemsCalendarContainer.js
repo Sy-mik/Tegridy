@@ -12,7 +12,7 @@ export default function ScheduledItemsCalendarContainer({
 }) {
   let dispatch = useDispatch();
 
-  const [modalVisible, setModalVisible] = useModalState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [pickedDate, setPickedDate] = React.useState(new Date());
 
   const dates = useSelector((state) => state.updateMarkedDates);
